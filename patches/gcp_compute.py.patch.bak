@@ -1,0 +1,101 @@
+--- /usr/local/lib/python2.7/dist-packages/ansible/plugins/inventory/gcp_compute.py	2019-04-10 16:38:30.587502000 +0700
++++ /home/pras/patches/gcp_compute.py	2019-04-10 17:04:13.864035200 +0700
+@@ -14,6 +14,7 @@
+     extends_documentation_fragment:
+         - constructed
+         - inventory_cache
++        - gcp
+     description:
+         - Get inventory hosts from Google Cloud Platform GCE.
+         - Uses a YAML configuration file that ends with gcp_compute.(yml|yaml) or gcp.(yml|yaml).
+@@ -48,6 +49,9 @@
+             description:
+                 - An optional service account email address if machineaccount is selected
+                   and the user does not wish to use the default email.
++        vars_prefix:
++            description: prefix to apply to host variables, does not include facts nor params
++            default: ''
+ '''
+ 
+ EXAMPLES = '''
+@@ -60,11 +64,21 @@
+ filters:
+   - machineType = n1-standard-1
+   - scheduling.automaticRestart = true AND machineType = n1-standard-1
+-
+ scopes:
+   - https://www.googleapis.com/auth/compute
+ service_account_file: /tmp/service_account.json
+ auth_kind: serviceaccount
++keyed_groups:
++  # Create groups from GCE labels
++  - prefix: gcp
++    key: labels
++hostnames:
++  # List host by name instead of the default public ip
++  - name
++compose:
++  # Set an inventory parameter to use the Public IP address to connect to the host
++  # For Private ip use "networkInterfaces[0].networkIP"
++  ansible_host: networkInterfaces[0].accessConfigs[0].natIP
+ '''
+ 
+ from ansible.errors import AnsibleError, AnsibleParserError
+@@ -73,6 +87,7 @@
+ from ansible.module_utils.gcp_utils import GcpSession, navigate_hash, GcpRequestException
+ from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable, to_safe_group_name
+ import json
++import os
+ 
+ 
+ # The mappings give an array of keys to get from the filter name to the value
+@@ -80,10 +95,26 @@
+ class GcpMockModule(object):
+     def __init__(self, params):
+         self.params = params
++        self._set_fallbacks()
++
++        if 'service_account_file' in self.params:
++            self.params['service_account_file'] = os.path.expanduser(self.params['service_account_file'])
+ 
+     def fail_json(self, *args, **kwargs):
+         raise AnsibleError(kwargs['msg'])
+ 
++    def _set_fallbacks(self):
++        self._set_fallback('project', 'GCP_PROJECT')
++        self._set_fallback('auth_kind', 'GCP_AUTH_KIND')
++        self._set_fallback('service_account_email', 'GCP_SERVICE_ACCOUNT_EMAIL')
++        self._set_fallback('service_account_file', 'GCP_SERVICE_ACCOUNT_FILE')
++        self._set_fallback('scopes', 'GCP_SCOPES')
++
++    def _set_fallback(self, param, env_value):
++        if param not in self.params:
++            if env_value in os.environ:
++                self.params[param] = os.environ[env_value]
++
+ 
+ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
+ 
+@@ -101,7 +132,10 @@
+         hostname = self._get_hostname(item)
+         self.inventory.add_host(hostname)
+         for key in item:
+-            self.inventory.set_variable(hostname, key, item[key])
++            try:
++                self.inventory.set_variable(hostname, self.get_option('vars_prefix') + key, item[key])
++            except (ValueError, TypeError) as e:
++                self.display.warning("Could not set host info hostvar for %s, skipping %s: %s" % (hostname, key, to_native(e)))
+         self.inventory.add_child('all', hostname)
+ 
+     def verify_file(self, path):
+@@ -321,6 +355,10 @@
+         if not isinstance(config_data['projects'], list):
+             raise AnsibleParserError("Projects must be a list in GCP inventory YAML files")
+ 
++        # add in documented defaults
++        if 'filters' not in config_data:
++            config_data['filters'] = None
++
+         projects = config_data['projects']
+         zones = config_data.get('zones')
+         config_data['scopes'] = ['https://www.googleapis.com/auth/compute']
