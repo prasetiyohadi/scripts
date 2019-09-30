@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 set -ex
 
-export ANSIBLE_VERSION=2.7.10
+export ANSIBLE_VERSION=2.8.5
 
 # install ansible
 pip install --upgrade pip cffi
