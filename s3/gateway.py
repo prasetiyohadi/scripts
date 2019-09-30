@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# pip install boto
 import boto.s3.connection
 
 access_key = 'Y9HFBFB0QFUHI6SSQ70X'

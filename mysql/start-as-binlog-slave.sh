@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "Input required parameters: "
 read -p "Master Host: "  MASTER_HOST
 if [ -z "$MASTER_HOST" ]; then echo "Master Host is required!"; exit 0; fi

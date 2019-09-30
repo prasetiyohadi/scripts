@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -ex
 
 if [ "$(lsb_release -is)" == "Debian" ] || [ "$(lsb_release -is)" == "Ubuntu" ]; then
