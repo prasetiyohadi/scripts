@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -ex
 
 export ALIYUN_CLI_VERSION=3.0.26
