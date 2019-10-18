@@ -2,7 +2,6 @@
 set -ex
 
 export TERRAFORM_VERSION=0.11.13
-export TERRAGRUNT_VERSION=v0.18.5
 
 # check terraform version
 if [ -f "$(which terraform)" ]; then
