@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-export TERRAGRUNT_VERSION=v0.19.25
+export TERRAGRUNT_VERSION=v0.20.4
 
 # install terragrunt
 mkdir -p ~/bin
