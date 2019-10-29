@@ -1,0 +1,2636 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="catalyst"
+#ZSH_THEME="amuse"
+#ZSH_THEME="arrow"
+#ZSH_THEME="avit"
+#ZSH_THEME="bureau"
+#ZSH_THEME="clean"
+#ZSH_THEME="crunch"
+#ZSH_THEME="cypher"
+#ZSH_THEME="daveverwer"
+#ZSH_THEME="dieter"
+#ZSH_THEME="edvardm"
+#ZSH_THEME="evan"
+#ZSH_THEME="flazz"
+#ZSH_THEME="fletcherm"
+#ZSH_THEME="fwalch"
+#ZSH_THEME="gallifrey"
+#ZSH_THEME="garyblessington"
+#ZSH_THEME="geoffgarside"
+#ZSH_THEME="gianu"
+#ZSH_THEME="gozilla"
+#ZSH_THEME="jbergantine"
+#ZSH_THEME="jispwoso"
+#ZSH_THEME="jnrowe"
+#ZSH_THEME="juanghurtado"
+#ZSH_THEME="lambda"
+#ZSH_THEME="lukerandall"
+#ZSH_THEME="muse"
+#ZSH_THEME="nanotech"
+#ZSH_THEME="nicoulaj"
+#ZSH_THEME="norm"
+#ZSH_THEME="sonicradish"
+
+# Uncomment the following line to use case-sensitive completion.
+CASE_SENSITIVE="false"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+export UPDATE_ZSH_DAYS=1
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+  history-substring-search
+) 
+#bindkey '^ ' autosuggest-accept
+
+source $ZSH/oh-my-zsh.sh
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Curl with header content-type application/json
+alias curlh='curl -H "Content-Type: application/json"'
+
+# Kubectl
+alias kubectl="$HOME/bin/kubectl/5/kubectl"
+alias k="kubectl"
+alias kc="kubectl create"
+alias kcfg="kubectl config"
+alias kd="kubectl describe"
+alias kdel="kubectl delete"
+alias kdes="kubectl describe"
+alias ke="kubectl exec -it"
+alias kg="kubectl get"
+alias klab="kubectl label"
+alias klog="kubectl logs"
+
+# Nodeenv
+alias activate_nenv='[[ -s "./nenv/bin/activate" ]] && source "./nenv/bin/activate"'
+
+# Projector
+alias connect_projector_vga='xrandr --output LVDS-1-1 --auto --output VGA-1-1 --auto --primary --right-of LVDS-1-1'
+
+# Proxy
+PROXY_SRC='http://167.205.50.80:39154'
+NO_PROXY_SRC='"localhost,127.0.0.1,itb.ac.id,.itb.ac.id,167.205."'
+alias connect_proxy='export ftp_proxy=$PROXY_SRC http_proxy=$PROXY_SRC https_proxy=$PROXY_SRC no_proxy=$NO_PROXY_SRC'
+alias connect_proxy_kube='export ftp_proxy=$PROXY_SRC http_proxy=$PROXY_SRC https_proxy=$PROXY_SRC && export no_proxy="localhost,127.0.0.1,itb.ac.id,.itb.ac.id,167.205.,`minikube ip`"'
+alias disconnect_proxy='unset ftp_proxy http_proxy https_proxy no_proxy'
+
+# Reset psmouse
+alias reset_mouse='sudo modprobe -r psmouse && sudo modprobe psmouse'
+
+# Virtualenv
+alias activate_venv2='[[ -s "./venv2/bin/activate" ]] && source "./venv2/bin/activate"'
+alias activate_venv3='[[ -s "./venv3/bin/activate" ]] && source "./venv3/bin/activate"'
+
+# VIM
+alias vi='vim'
+
+# User configuration
+
+# You may need to manually set your language environment
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+export EDITOR='vim'
+export VISUAL="vim"
+
+# Ansible
+export ANSIBLE_NOCOWS=1
+
+# Ansible ARA
+#export ara_location=$(python -c "import os,ara; print(os.path.dirname(ara.__file__))")
+#export ANSIBLE_CALLBACK_PLUGINS=$ANSIBLE_CALLBACK_PLUGINS:$ara_location/plugins/callbacks
+#export ANSIBLE_ACTION_PLUGINS=$ANSIBLE_ACTION_PLUGINS:$ara_location/plugins/actions
+#export ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$ara_location/plugins/modules
+
+# Compilation flags
+export ARCHFLAGS="-arch x86_64"
+
+# Golang
+export GOROOT=$HOME/.local/go
+export GOPATH=$HOME/go
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+
+# Kotlin
+export KTROOT=$HOME/.local/kotlin
+export PATH="$PATH:$KTROOT/bin"
+
+# Kubernetes
+#source <(kubectl completion zsh)
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"
+
+# Perlbrew
+[[ -s "$HOME/.perlbrew/etc/zshrc" ]] && .  "$HOME/./perlbrew/etc/zshrc"
+
+# RVM
+export rvm_ignore_gemrc_issues=1
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" 
+
+# SSH
+export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# SSH syseng
+alias sshsyseng='sshpass -e ssh -l syseng'
+
+# Tmux
+# Have tmux respect active venv when splitting panes
+if [ -n "$VIRTUAL_ENV" ]; then
+  source $VIRTUAL_ENV/bin/activate
+fi
+if [[ -n "$TMUX" && -n "$VIRTUAL_ENV" ]]; then
+  tmux set-environment VIRTUAL_ENV $VIRTUAL_ENV
+fi
+
+# Functions
+#
+# print the header (the first line of input)
+# and then run the specified command on the body (the rest of the input)
+# use it in a pipeline, e.g. ps | body grep somepattern
+body() {
+    IFS= read -r header
+    printf '%s\n' "$header"
+    "$@"
+}
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/pras/.local/google-cloud-sdk/path.zsh.inc' ]; then . '/home/pras/.local/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/pras/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/pras/.local/google-cloud-sdk/completion.zsh.inc'; fi
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /home/pras/bin/mc mc
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+
+# Copyright 2016 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+__minishift_bash_source() {
+	alias shopt=':'
+	alias _expand=_bash_expand
+	alias _complete=_bash_comp
+	emulate -L sh
+	setopt kshglob noshglob braceexpand
+	source "$@"
+}
+__minishift_type() {
+	# -t is not supported by zsh
+	if [ "$1" == "-t" ]; then
+		shift
+		# fake Bash 4 to disable "complete -o nospace". Instead
+		# "compopt +-o nospace" is used in the code to toggle trailing
+		# spaces. We don't support that, but leave trailing spaces on
+		# all the time
+		if [ "$1" = "__minishift_compopt" ]; then
+			echo builtin
+			return 0
+		fi
+	fi
+	type "$@"
+}
+__minishift_compgen() {
+	local completions w
+	completions=( $(compgen "$@") ) || return $?
+	# filter by given word as prefix
+	while [[ "$1" = -* && "$1" != -- ]]; do
+		shift
+		shift
+	done
+	if [[ "$1" == -- ]]; then
+		shift
+	fi
+	for w in "${completions[@]}"; do
+		if [[ "${w}" = "$1"* ]]; then
+			echo "${w}"
+		fi
+	done
+}
+__minishift_compopt() {
+	true # don't do anything. Not supported by bashcompinit in zsh
+}
+__minishift_declare() {
+	if [ "$1" == "-F" ]; then
+		whence -w "$@"
+	else
+		builtin declare "$@"
+	fi
+}
+__minishift_ltrim_colon_completions()
+{
+	if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
+		# Remove colon-word prefix from COMPREPLY items
+		local colon_word=${1%${1##*:}}
+		local i=${#COMPREPLY[*]}
+		while [[ $((--i)) -ge 0 ]]; do
+			COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
+		done
+	fi
+}
+__minishift_get_comp_words_by_ref() {
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[${COMP_CWORD}-1]}"
+	words=("${COMP_WORDS[@]}")
+	cword=("${COMP_CWORD[@]}")
+}
+__minishift_filedir() {
+	local RET OLD_IFS w qw
+	__debug "_filedir $@ cur=$cur"
+	if [[ "$1" = \~* ]]; then
+		# somehow does not work. Maybe, zsh does not call this at all
+		eval echo "$1"
+		return 0
+	fi
+	OLD_IFS="$IFS"
+	IFS=$'\n'
+	if [ "$1" = "-d" ]; then
+		shift
+		RET=( $(compgen -d) )
+	else
+		RET=( $(compgen -f) )
+	fi
+	IFS="$OLD_IFS"
+	IFS="," __debug "RET=${RET[@]} len=${#RET[@]}"
+	for w in ${RET[@]}; do
+		if [[ ! "${w}" = "${cur}"* ]]; then
+			continue
+		fi
+		if eval "[[ \"\${w}\" = *.$1 || -d \"\${w}\" ]]"; then
+			qw="$(__minishift_quote "${w}")"
+			if [ -d "${w}" ]; then
+				COMPREPLY+=("${qw}/")
+			else
+				COMPREPLY+=("${qw}")
+			fi
+		fi
+	done
+}
+__minishift_quote() {
+	if [[ $1 == \'* || $1 == \"* ]]; then
+		# Leave out first character
+		printf %q "${1:1}"
+	else
+		printf %q "$1"
+	fi
+}
+autoload -U +X bashcompinit && bashcompinit
+# use word boundary patterns for BSD or GNU sed
+LWORD='[[:<:]]'
+RWORD='[[:>:]]'
+if sed --help 2>&1 | grep -q GNU; then
+	LWORD='\<'
+	RWORD='\>'
+fi
+__minishift_convert_bash_to_zsh() {
+	sed \
+	-e 's/declare -F/whence -w/' \
+	-e 's/_get_comp_words_by_ref "\$@"/_get_comp_words_by_ref "\$*"/' \
+	-e 's/local \([a-zA-Z0-9_]*\)=/local \1; \1=/' \
+	-e 's/flags+=("\(--.*\)=")/flags+=("\1"); two_word_flags+=("\1")/' \
+	-e 's/must_have_one_flag+=("\(--.*\)=")/must_have_one_flag+=("\1")/' \
+	-e "s/${LWORD}_filedir${RWORD}/__minishift_filedir/g" \
+	-e "s/${LWORD}_get_comp_words_by_ref${RWORD}/__minishift_get_comp_words_by_ref/g" \
+	-e "s/${LWORD}__ltrim_colon_completions${RWORD}/__minishift_ltrim_colon_completions/g" \
+	-e "s/${LWORD}compgen${RWORD}/__minishift_compgen/g" \
+	-e "s/${LWORD}compopt${RWORD}/__minishift_compopt/g" \
+	-e "s/${LWORD}declare${RWORD}/__minishift_declare/g" \
+	-e "s/\\\$(type${RWORD}/\$(__minishift_type/g" \
+	<<'BASH_COMPLETION_EOF'
+# bash completion for minishift                            -*- shell-script -*-
+
+__debug()
+{
+    if [[ -n ${BASH_COMP_DEBUG_FILE} ]]; then
+        echo "$*" >> "${BASH_COMP_DEBUG_FILE}"
+    fi
+}
+
+# Homebrew on Macs have version 1.3 of bash-completion which doesn't include
+# _init_completion. This is a very minimal version of that function.
+__my_init_completion()
+{
+    COMPREPLY=()
+    _get_comp_words_by_ref "$@" cur prev words cword
+}
+
+__index_of_word()
+{
+    local w word=$1
+    shift
+    index=0
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+        index=$((index+1))
+    done
+    index=-1
+}
+
+__contains_word()
+{
+    local w word=$1; shift
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+    done
+    return 1
+}
+
+__handle_reply()
+{
+    __debug "${FUNCNAME[0]}"
+    case $cur in
+        -*)
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                compopt -o nospace
+            fi
+            local allflags
+            if [ ${#must_have_one_flag[@]} -ne 0 ]; then
+                allflags=("${must_have_one_flag[@]}")
+            else
+                allflags=("${flags[*]} ${two_word_flags[*]}")
+            fi
+            COMPREPLY=( $(compgen -W "${allflags[*]}" -- "$cur") )
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                [[ "${COMPREPLY[0]}" == *= ]] || compopt +o nospace
+            fi
+
+            # complete after --flag=abc
+            if [[ $cur == *=* ]]; then
+                if [[ $(type -t compopt) = "builtin" ]]; then
+                    compopt +o nospace
+                fi
+
+                local index flag
+                flag="${cur%%=*}"
+                __index_of_word "${flag}" "${flags_with_completion[@]}"
+                COMPREPLY=()
+                if [[ ${index} -ge 0 ]]; then
+                    PREFIX=""
+                    cur="${cur#*=}"
+                    ${flags_completion[${index}]}
+                    if [ -n "${ZSH_VERSION}" ]; then
+                        # zfs completion needs --flag= prefix
+                        eval "COMPREPLY=( \"\${COMPREPLY[@]/#/${flag}=}\" )"
+                    fi
+                fi
+            fi
+            return 0;
+            ;;
+    esac
+
+    # check if we are handling a flag with special work handling
+    local index
+    __index_of_word "${prev}" "${flags_with_completion[@]}"
+    if [[ ${index} -ge 0 ]]; then
+        ${flags_completion[${index}]}
+        return
+    fi
+
+    # we are parsing a flag and don't have a special handler, no completion
+    if [[ ${cur} != "${words[cword]}" ]]; then
+        return
+    fi
+
+    local completions
+    completions=("${commands[@]}")
+    if [[ ${#must_have_one_noun[@]} -ne 0 ]]; then
+        completions=("${must_have_one_noun[@]}")
+    fi
+    if [[ ${#must_have_one_flag[@]} -ne 0 ]]; then
+        completions+=("${must_have_one_flag[@]}")
+    fi
+    COMPREPLY=( $(compgen -W "${completions[*]}" -- "$cur") )
+
+    if [[ ${#COMPREPLY[@]} -eq 0 && ${#noun_aliases[@]} -gt 0 && ${#must_have_one_noun[@]} -ne 0 ]]; then
+        COMPREPLY=( $(compgen -W "${noun_aliases[*]}" -- "$cur") )
+    fi
+
+    if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+        declare -F __custom_func >/dev/null && __custom_func
+    fi
+
+    __ltrim_colon_completions "$cur"
+}
+
+# The arguments should be in the form "ext1|ext2|extn"
+__handle_filename_extension_flag()
+{
+    local ext="$1"
+    _filedir "@(${ext})"
+}
+
+__handle_subdirs_in_dir_flag()
+{
+    local dir="$1"
+    pushd "${dir}" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1
+}
+
+__handle_flag()
+{
+    __debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    # if a command required a flag, and we found it, unset must_have_one_flag()
+    local flagname=${words[c]}
+    local flagvalue
+    # if the word contained an =
+    if [[ ${words[c]} == *"="* ]]; then
+        flagvalue=${flagname#*=} # take in as flagvalue after the =
+        flagname=${flagname%%=*} # strip everything after the =
+        flagname="${flagname}=" # but put the = back
+    fi
+    __debug "${FUNCNAME[0]}: looking for ${flagname}"
+    if __contains_word "${flagname}" "${must_have_one_flag[@]}"; then
+        must_have_one_flag=()
+    fi
+
+    # if you set a flag which only applies to this command, don't show subcommands
+    if __contains_word "${flagname}" "${local_nonpersistent_flags[@]}"; then
+      commands=()
+    fi
+
+    # keep flag value with flagname as flaghash
+    if [ -n "${flagvalue}" ] ; then
+        flaghash[${flagname}]=${flagvalue}
+    elif [ -n "${words[ $((c+1)) ]}" ] ; then
+        flaghash[${flagname}]=${words[ $((c+1)) ]}
+    else
+        flaghash[${flagname}]="true" # pad "true" for bool flag
+    fi
+
+    # skip the argument to a two word flag
+    if __contains_word "${words[c]}" "${two_word_flags[@]}"; then
+        c=$((c+1))
+        # if we are looking for a flags value, don't show commands
+        if [[ $c -eq $cword ]]; then
+            commands=()
+        fi
+    fi
+
+    c=$((c+1))
+
+}
+
+__handle_noun()
+{
+    __debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    if __contains_word "${words[c]}" "${must_have_one_noun[@]}"; then
+        must_have_one_noun=()
+    elif __contains_word "${words[c]}" "${noun_aliases[@]}"; then
+        must_have_one_noun=()
+    fi
+
+    nouns+=("${words[c]}")
+    c=$((c+1))
+}
+
+__handle_command()
+{
+    __debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    local next_command
+    if [[ -n ${last_command} ]]; then
+        next_command="_${last_command}_${words[c]//:/__}"
+    else
+        if [[ $c -eq 0 ]]; then
+            next_command="_$(basename "${words[c]//:/__}")"
+        else
+            next_command="_${words[c]//:/__}"
+        fi
+    fi
+    c=$((c+1))
+    __debug "${FUNCNAME[0]}: looking for ${next_command}"
+    declare -F "$next_command" >/dev/null && $next_command
+}
+
+__handle_word()
+{
+    if [[ $c -ge $cword ]]; then
+        __handle_reply
+        return
+    fi
+    __debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+    if [[ "${words[c]}" == -* ]]; then
+        __handle_flag
+    elif __contains_word "${words[c]}" "${commands[@]}"; then
+        __handle_command
+    elif [[ $c -eq 0 ]] && __contains_word "$(basename "${words[c]}")" "${commands[@]}"; then
+        __handle_command
+    else
+        __handle_noun
+    fi
+    __handle_word
+}
+
+_minishift_addons_apply()
+{
+    last_command="minishift_addons_apply"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--addon-env=")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--addon-env=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons_disable()
+{
+    last_command="minishift_addons_disable"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons_enable()
+{
+    last_command="minishift_addons_enable"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--priority=")
+    local_nonpersistent_flags+=("--priority=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons_install()
+{
+    last_command="minishift_addons_install"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--defaults")
+    local_nonpersistent_flags+=("--defaults")
+    flags+=("--enable")
+    local_nonpersistent_flags+=("--enable")
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons_list()
+{
+    last_command="minishift_addons_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--verbose")
+    local_nonpersistent_flags+=("--verbose")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons_remove()
+{
+    last_command="minishift_addons_remove"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--addon-env=")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--addon-env=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons_uninstall()
+{
+    last_command="minishift_addons_uninstall"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_addons()
+{
+    last_command="minishift_addons"
+    commands=()
+    commands+=("apply")
+    commands+=("disable")
+    commands+=("enable")
+    commands+=("install")
+    commands+=("list")
+    commands+=("remove")
+    commands+=("uninstall")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_completion()
+{
+    last_command="minishift_completion"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("-h")
+    local_nonpersistent_flags+=("--help")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_config_get()
+{
+    last_command="minishift_config_get"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--global")
+    local_nonpersistent_flags+=("--global")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_config_set()
+{
+    last_command="minishift_config_set"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--global")
+    local_nonpersistent_flags+=("--global")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_config_unset()
+{
+    last_command="minishift_config_unset"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--global")
+    local_nonpersistent_flags+=("--global")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_config_view()
+{
+    last_command="minishift_config_view"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--format=")
+    local_nonpersistent_flags+=("--format=")
+    flags+=("--global")
+    local_nonpersistent_flags+=("--global")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_config()
+{
+    last_command="minishift_config"
+    commands=()
+    commands+=("get")
+    commands+=("set")
+    commands+=("unset")
+    commands+=("view")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_console()
+{
+    last_command="minishift_console"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--machine-readable")
+    local_nonpersistent_flags+=("--machine-readable")
+    flags+=("--request-oauth-token")
+    local_nonpersistent_flags+=("--request-oauth-token")
+    flags+=("--url")
+    local_nonpersistent_flags+=("--url")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_delete()
+{
+    last_command="minishift_delete"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--clear-cache")
+    local_nonpersistent_flags+=("--clear-cache")
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_docker-env()
+{
+    last_command="minishift_docker-env"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--no-proxy")
+    local_nonpersistent_flags+=("--no-proxy")
+    flags+=("--shell=")
+    local_nonpersistent_flags+=("--shell=")
+    flags+=("--unset")
+    flags+=("-u")
+    local_nonpersistent_flags+=("--unset")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_hostfolder_add()
+{
+    last_command="minishift_hostfolder_add"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--instance-only")
+    local_nonpersistent_flags+=("--instance-only")
+    flags+=("--interactive")
+    flags+=("-i")
+    local_nonpersistent_flags+=("--interactive")
+    flags+=("--options=")
+    local_nonpersistent_flags+=("--options=")
+    flags+=("--source=")
+    local_nonpersistent_flags+=("--source=")
+    flags+=("--target=")
+    local_nonpersistent_flags+=("--target=")
+    flags+=("--type=")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--type=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_hostfolder_list()
+{
+    last_command="minishift_hostfolder_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_hostfolder_mount()
+{
+    last_command="minishift_hostfolder_mount"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    flags+=("-a")
+    local_nonpersistent_flags+=("--all")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_hostfolder_remove()
+{
+    last_command="minishift_hostfolder_remove"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_hostfolder_umount()
+{
+    last_command="minishift_hostfolder_umount"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_hostfolder()
+{
+    last_command="minishift_hostfolder"
+    commands=()
+    commands+=("add")
+    commands+=("list")
+    commands+=("mount")
+    commands+=("remove")
+    commands+=("umount")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_cache-config_add()
+{
+    last_command="minishift_image_cache-config_add"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_cache-config_remove()
+{
+    last_command="minishift_image_cache-config_remove"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_cache-config_view()
+{
+    last_command="minishift_image_cache-config_view"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_cache-config()
+{
+    last_command="minishift_image_cache-config"
+    commands=()
+    commands+=("add")
+    commands+=("remove")
+    commands+=("view")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_delete()
+{
+    last_command="minishift_image_delete"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    flags+=("-a")
+    local_nonpersistent_flags+=("--all")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_export()
+{
+    last_command="minishift_image_export"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    local_nonpersistent_flags+=("--all")
+    flags+=("--log-to-file")
+    local_nonpersistent_flags+=("--log-to-file")
+    flags+=("--overwrite")
+    local_nonpersistent_flags+=("--overwrite")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_import()
+{
+    last_command="minishift_image_import"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    local_nonpersistent_flags+=("--all")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image_list()
+{
+    last_command="minishift_image_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--vm")
+    local_nonpersistent_flags+=("--vm")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_image()
+{
+    last_command="minishift_image"
+    commands=()
+    commands+=("cache-config")
+    commands+=("delete")
+    commands+=("export")
+    commands+=("import")
+    commands+=("list")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_ip()
+{
+    last_command="minishift_ip"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--set-dhcp")
+    local_nonpersistent_flags+=("--set-dhcp")
+    flags+=("--set-static")
+    local_nonpersistent_flags+=("--set-static")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_logs()
+{
+    last_command="minishift_logs"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--follow")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--follow")
+    flags+=("--tail=")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--tail=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_oc-env()
+{
+    last_command="minishift_oc-env"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--no-proxy")
+    local_nonpersistent_flags+=("--no-proxy")
+    flags+=("--shell=")
+    local_nonpersistent_flags+=("--shell=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_component_add()
+{
+    last_command="minishift_openshift_component_add"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_component_list()
+{
+    last_command="minishift_openshift_component_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_component()
+{
+    last_command="minishift_openshift_component"
+    commands=()
+    commands+=("add")
+    commands+=("list")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_config_set()
+{
+    last_command="minishift_openshift_config_set"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--patch=")
+    local_nonpersistent_flags+=("--patch=")
+    flags+=("--target=")
+    local_nonpersistent_flags+=("--target=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_config_view()
+{
+    last_command="minishift_openshift_config_view"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--target=")
+    local_nonpersistent_flags+=("--target=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_config()
+{
+    last_command="minishift_openshift_config"
+    commands=()
+    commands+=("set")
+    commands+=("view")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_registry()
+{
+    last_command="minishift_openshift_registry"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_restart()
+{
+    last_command="minishift_openshift_restart"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_service_list()
+{
+    last_command="minishift_openshift_service_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--namespace=")
+    two_word_flags+=("-n")
+    local_nonpersistent_flags+=("--namespace=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_service()
+{
+    last_command="minishift_openshift_service"
+    commands=()
+    commands+=("list")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--https")
+    local_nonpersistent_flags+=("--https")
+    flags+=("--in-browser")
+    local_nonpersistent_flags+=("--in-browser")
+    flags+=("--namespace=")
+    two_word_flags+=("-n")
+    local_nonpersistent_flags+=("--namespace=")
+    flags+=("--url")
+    flags+=("-u")
+    local_nonpersistent_flags+=("--url")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_version_list()
+{
+    last_command="minishift_openshift_version_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift_version()
+{
+    last_command="minishift_openshift_version"
+    commands=()
+    commands+=("list")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_openshift()
+{
+    last_command="minishift_openshift"
+    commands=()
+    commands+=("component")
+    commands+=("config")
+    commands+=("registry")
+    commands+=("restart")
+    commands+=("service")
+    commands+=("version")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_profile_copy()
+{
+    last_command="minishift_profile_copy"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_profile_delete()
+{
+    last_command="minishift_profile_delete"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_profile_list()
+{
+    last_command="minishift_profile_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_profile_set()
+{
+    last_command="minishift_profile_set"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_profile()
+{
+    last_command="minishift_profile"
+    commands=()
+    commands+=("copy")
+    commands+=("delete")
+    commands+=("list")
+    commands+=("set")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_services_list()
+{
+    last_command="minishift_services_list"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_services_start()
+{
+    last_command="minishift_services_start"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_services_stop()
+{
+    last_command="minishift_services_stop"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_services()
+{
+    last_command="minishift_services"
+    commands=()
+    commands+=("list")
+    commands+=("start")
+    commands+=("stop")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_setup()
+{
+    last_command="minishift_setup"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_ssh()
+{
+    last_command="minishift_ssh"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_start()
+{
+    last_command="minishift_start"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--addon-env=")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--addon-env=")
+    flags+=("--cpus=")
+    local_nonpersistent_flags+=("--cpus=")
+    flags+=("--disk-size=")
+    local_nonpersistent_flags+=("--disk-size=")
+    flags+=("--docker-env=")
+    local_nonpersistent_flags+=("--docker-env=")
+    flags+=("--docker-opt=")
+    local_nonpersistent_flags+=("--docker-opt=")
+    flags+=("--host-only-cidr=")
+    local_nonpersistent_flags+=("--host-only-cidr=")
+    flags+=("--http-proxy=")
+    local_nonpersistent_flags+=("--http-proxy=")
+    flags+=("--https-proxy=")
+    local_nonpersistent_flags+=("--https-proxy=")
+    flags+=("--insecure-registry=")
+    local_nonpersistent_flags+=("--insecure-registry=")
+    flags+=("--iso-url=")
+    local_nonpersistent_flags+=("--iso-url=")
+    flags+=("--memory=")
+    local_nonpersistent_flags+=("--memory=")
+    flags+=("--network-nameserver=")
+    local_nonpersistent_flags+=("--network-nameserver=")
+    flags+=("--no-proxy=")
+    local_nonpersistent_flags+=("--no-proxy=")
+    flags+=("--openshift-version=")
+    local_nonpersistent_flags+=("--openshift-version=")
+    flags+=("--password=")
+    local_nonpersistent_flags+=("--password=")
+    flags+=("--public-hostname=")
+    local_nonpersistent_flags+=("--public-hostname=")
+    flags+=("--registry-mirror=")
+    local_nonpersistent_flags+=("--registry-mirror=")
+    flags+=("--remote-ipaddress=")
+    local_nonpersistent_flags+=("--remote-ipaddress=")
+    flags+=("--remote-ssh-key=")
+    local_nonpersistent_flags+=("--remote-ssh-key=")
+    flags+=("--remote-ssh-user=")
+    local_nonpersistent_flags+=("--remote-ssh-user=")
+    flags+=("--routing-suffix=")
+    local_nonpersistent_flags+=("--routing-suffix=")
+    flags+=("--server-loglevel=")
+    local_nonpersistent_flags+=("--server-loglevel=")
+    flags+=("--skip-registration")
+    local_nonpersistent_flags+=("--skip-registration")
+    flags+=("--skip-registry-check")
+    local_nonpersistent_flags+=("--skip-registry-check")
+    flags+=("--skip-startup-checks")
+    local_nonpersistent_flags+=("--skip-startup-checks")
+    flags+=("--timezone=")
+    local_nonpersistent_flags+=("--timezone=")
+    flags+=("--username=")
+    local_nonpersistent_flags+=("--username=")
+    flags+=("--vm-driver=")
+    local_nonpersistent_flags+=("--vm-driver=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_status()
+{
+    last_command="minishift_status"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_stop()
+{
+    last_command="minishift_stop"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--skip-unregistration")
+    local_nonpersistent_flags+=("--skip-unregistration")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_update()
+{
+    last_command="minishift_update"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--force")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--force")
+    flags+=("--http-proxy=")
+    local_nonpersistent_flags+=("--http-proxy=")
+    flags+=("--https-proxy=")
+    local_nonpersistent_flags+=("--https-proxy=")
+    flags+=("--update-addons")
+    local_nonpersistent_flags+=("--update-addons")
+    flags+=("--version=")
+    local_nonpersistent_flags+=("--version=")
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift_version()
+{
+    last_command="minishift_version"
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_minishift()
+{
+    last_command="minishift"
+    commands=()
+    commands+=("addons")
+    commands+=("completion")
+    commands+=("config")
+    commands+=("console")
+    commands+=("delete")
+    commands+=("docker-env")
+    commands+=("hostfolder")
+    commands+=("image")
+    commands+=("ip")
+    commands+=("logs")
+    commands+=("oc-env")
+    commands+=("openshift")
+    commands+=("profile")
+    commands+=("services")
+    commands+=("setup")
+    commands+=("ssh")
+    commands+=("start")
+    commands+=("status")
+    commands+=("stop")
+    commands+=("update")
+    commands+=("version")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--alsologtostderr")
+    flags+=("--log_backtrace_at=")
+    flags+=("--log_dir=")
+    flags+=("--logtostderr")
+    flags+=("--profile=")
+    flags+=("--show-libmachine-logs")
+    flags+=("--stderrthreshold=")
+    flags+=("--v=")
+    two_word_flags+=("-v")
+    flags+=("--vmodule=")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+__start_minishift()
+{
+    local cur prev words cword
+    declare -A flaghash 2>/dev/null || :
+    if declare -F _init_completion >/dev/null 2>&1; then
+        _init_completion -s || return
+    else
+        __my_init_completion -n "=" || return
+    fi
+
+    local c=0
+    local flags=()
+    local two_word_flags=()
+    local local_nonpersistent_flags=()
+    local flags_with_completion=()
+    local flags_completion=()
+    local commands=("minishift")
+    local must_have_one_flag=()
+    local must_have_one_noun=()
+    local last_command
+    local nouns=()
+
+    __handle_word
+}
+
+if [[ $(type -t compopt) = "builtin" ]]; then
+    complete -o default -F __start_minishift minishift
+else
+    complete -o default -o nospace -F __start_minishift minishift
+fi
+
+# ex: ts=4 sw=4 et filetype=sh
+
+BASH_COMPLETION_EOF
+}
+__minishift_bash_source <(__minishift_convert_bash_to_zsh)
