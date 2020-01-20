@@ -1,22 +1,18 @@
 #!/bin/sh
 set -ex
 
-export GO_VERSION=1.13
+export OS=${OSTYPE:-'linux'}
+export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+export GO_VERSION=1.13.6
+export GO_URL=https://dl.google.com/go/go${GO_VERSION}.${OS_TYPE}-amd64.tar.gz
+export GO_INSTALL_PATH=~/.local
+export GOROOT=~/.local/go
+export GOPATH=~/go
 
 # install go
-if [ -d /usr/local/go ]; then
-  sudo rm -r /usr/local/go
+if [ -d ${GOROOT} ]; then
+  rm -r ${GOROOT}
 else
-  wget -O - https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz | sudo tar -C /usr/local -zxf -
-fi
-
-mkdir -p ~/go
-if [[ $SHELL =~ "zsh" ]]; then
-  echo "export GOROOT=/usr/local/go" >> ~/.zshrc
-  echo "export GOPATH=~/go" >> ~/.zshrc
-  echo "export PATH=\$PATH:\$GOROOT/bin:\$GOPATH/bin" >> ~/.zshrc
-elif [[ $SHELL =~ "bash" ]]; then
-  echo "export GOROOT=/usr/local/go" >> ~/.bashrc
-  echo "export GOPATH=~/go" >> ~/.bashrc
-  echo "export PATH=\$PATH:\$GOROOT/bin:\$GOPATH/bin" >> ~/.bashrc
+  mkdir -p ${GOPATH}
+  wget -O - ${GO_URL} | tar -C ${GO_INSTALL_PATH} -zxf -
 fi

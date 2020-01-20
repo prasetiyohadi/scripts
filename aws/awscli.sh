@@ -1,4 +1,4 @@
 #!/bin/sh
 set -ex
 
-pip install awscli --upgrade
+pip install -U awscli
