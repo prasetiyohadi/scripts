@@ -23,7 +23,8 @@ if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="white"; fi
 
 # Hostname part.  compressed and colorcoded per host_repr array
 # if not found, regular hostname in default color
-local host="@${host_repr[$HOST]:-$HOST}%{$reset_color%}"
+#local host="@${host_repr[$HOST]:-$HOST}%{$reset_color%}" # bad floating point
+local host="@${SHORT_HOST:-HOST}%{$reset_color%}"
 local ret_status="%(?:%{$fg_bold[green]%}Ξ:%{$fg_bold[red]%}%S↑%s%?)"
 
 # Color shortcuts
