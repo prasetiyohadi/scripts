@@ -1,9 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 set -ex
 
-export TERRAGRUNT_VERSION=v0.21.6
+export OS=${OSTYPE:-'linux-gnu'}
+export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+[[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin_amd64
+[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
+export TERRAGRUNT_VERSION=v0.21.11
+export TERRAGRUNT_URL=https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_${OS_TYPE}
 
 # install terragrunt
 mkdir -p ~/bin
-wget -O ~/bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/${TERRAGRUNT_VERSION}/terragrunt_linux_amd64
+wget -O ~/bin/terragrunt ${TERRAGRUNT_URL}
 chmod +x ~/bin/terragrunt
