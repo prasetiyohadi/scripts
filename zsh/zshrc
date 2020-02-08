@@ -160,7 +160,7 @@ if [ -d $KTROOT ]; then
 fi
 
 # Kubernetes
-which kubectl > /dev/null && source <(kubectl completion zsh)
+which kubectl 2> /dev/null 1> /dev/null && source <(kubectl completion zsh)
 
 # Minio client
 autoload -U +X bashcompinit && bashcompinit
