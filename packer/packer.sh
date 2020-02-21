@@ -6,7 +6,7 @@ export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin_amd64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
 [[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux_arm
-export PACKER_VERSION=1.4.2
+export PACKER_VERSION=1.5.4
 
 # check packer version
 if [ -f "`which packer`" ]; then
