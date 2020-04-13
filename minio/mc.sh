@@ -8,8 +8,8 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
   # install minio client
   if [ ! -f ~/bin/mc ]; then
     mkdir -p ~/bin
-    sudo wget -P ~/bin https://dl.min.io/client/mc/release/linux-amd64/mc
-    sudo chmod +x ~/bin/mc
+    wget -P ~/bin https://dl.min.io/client/mc/release/linux-amd64/mc
+    chmod +x ~/bin/mc
     mc --help
   fi
 elif [ "${OS_TYPE}" == "darwin" ]; then
