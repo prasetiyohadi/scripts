@@ -1,9 +1,15 @@
 #!/bin/sh
 set -ex
 
+# install tmux and powerline-status
 sudo apt update
-sudo apt install python3-pip tmux
+sudo apt install -y python3-pip tmux
 pip3 install --user powerline-status
-cp tmux.conf ~/.tmux.conf
-sudo apt purge python3-pip
-sudo apt autoremove
+
+# install .zshrc
+CWD=$(dirname $0)
+cp $CWD/tmux.conf ~/.tmux.conf
+
+# remove python3-pip
+sudo apt purge -y python3-pip
+sudo apt autoremove -y
