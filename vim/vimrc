@@ -2,8 +2,15 @@
 syntax on
 filetype plugin indent on
 
+" deoplete
+let g:deoplete#enable_at_startup = 1
+set runtimepath+=~/.vim/pack/plugins/start/deoplete
+set completeopt+=noselect
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+
 " nerdtree
 map <F2> :NERDTreeToggle<CR>
+"autocmd VimEnter * NERDTree
 
 " vim-airline
 let g:airline_powerline_fonts = 1
@@ -25,6 +32,7 @@ set expandtab                   " insert spaces when hitting TABs
 set fillchars+=stl:\ ,stlnc:\
 set laststatus=2
 set number
+set relativenumber
 set shiftround                  " round indent to multiple of 'shiftwidth'
 set shiftwidth=2                " operation >> indents 2 columns; << unindents 2 columns
 set showmatch
