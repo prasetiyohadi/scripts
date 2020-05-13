@@ -3,7 +3,9 @@ set -ex
 
 # install .zshrc
 CWD=$(dirname $0)
-cp $CWD/zshrc ~/.zshrc
+if [ -f /etc/debian_version ]; then
+  cp $CWD/zshrc.debian ~/.zshrc
+fi
 
 # install oh-my-zsh
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh

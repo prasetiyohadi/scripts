@@ -164,7 +164,7 @@ which kubectl 2> /dev/null 1> /dev/null && source <(kubectl completion zsh)
 
 # Minio client
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/mc mc
+complete -o nospace -C ~/bin/mc mc
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
@@ -183,10 +183,11 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Tmux
 # Have tmux respect active venv when splitting panes
 if [ -n "$VIRTUAL_ENV" ]; then
-  source $VIRTUAL_ENV/bin/activate
+# source $VIRTUAL_ENV/bin/activate  # commented out by conda initialize
 fi
 if [[ -n "$TMUX" && -n "$VIRTUAL_ENV" ]]; then
   tmux set-environment VIRTUAL_ENV $VIRTUAL_ENV
+  source $VIRTUAL_ENV/bin/activate
 fi
 
 # Functions
@@ -199,3 +200,23 @@ body() {
     printf '%s\n' "$header"
     "$@"
 }
+
+# WSL2
+# Go to $HOME
+#cd ~
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/pras/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/pras/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/pras/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/pras/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
