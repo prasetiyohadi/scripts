@@ -1,9 +1,18 @@
 #!/bin/sh
 set -ex
 
+# install vim-nox
+sudo apt update
+sudo apt install -y python3-pip vim-nox
+pip3 install --user neovim pynvim
+
 # install .vimrc
 CWD=$(dirname $0)
 cp $CWD/vimrc ~/.vimrc
+
+# remove python3-pip
+sudo apt purge -y python3-pip
+sudo apt autoremove -y
 
 # install vim packages
 mkdir -p ~/.vim/pack/plugins/start
