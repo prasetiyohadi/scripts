@@ -1,5 +1,5 @@
-#!/bin/sh
-set -ex
+#!/bin/bash
+set -euxo pipefail
 
 # install vim-nox
 sudo apt update

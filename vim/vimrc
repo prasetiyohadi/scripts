@@ -2,11 +2,17 @@
 syntax on
 filetype plugin indent on
 
+" mapleader
+let mapleader=","
+
 " deoplete
 let g:deoplete#enable_at_startup = 1
 set runtimepath+=~/.vim/pack/plugins/start/deoplete
 set completeopt+=noselect
 call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+
+" fzf
+set rtp+=/usr/share/doc/fzf/examples
 
 " nerdtree
 map <F2> :NERDTreeToggle<CR>
@@ -17,6 +23,13 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#virtualenv#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+
+" vim-gitgutter
+"function! GitStatus()
+"  let [a,m,r] = GitGutterGetHunkSummary()
+"  return printf('+%d ~%d -%d', a, m, r)
+"endfunction
+"set statusline+=%{GitStatus()}
 
 " vim-virtualenv
 let g:virtualenv_directory = '~/'
@@ -42,4 +55,10 @@ set softtabstop=2               " insert/delete 2 spaces when hitting a TAB/BACK
 set t_Co=256
 set tabstop=2                   " a hard TAB displays as 2 columns
 set termencoding=utf-8
-set textwidth=79                " lines longer than 119 columns will be broken 
+set textwidth=141               " lines longer than 142 columns will be broken
+
+" Go
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
