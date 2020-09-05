@@ -1,10 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euxo pipefail
+
+export OS=${OSTYPE:-'linux-gnu'}
+export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 
 # install .zshrc
 CWD=$(dirname $0)
-if [ -f /etc/debian_version ]; then
-  cp $CWD/zshrc.debian ~/.zshrc
+if [ "${OS_TYPE}" == "linux-gnu" ]; then
+    if [ -f /etc/debian_version ]; then
+      cp $CWD/zshrc.debian ~/.zshrc
+    fi
+elif [ "${OS_TYPE}" == "darwin" ]; then
+  cp $CWD/zshrc.macos ~/.zshrc
 fi
 
 # install oh-my-zsh

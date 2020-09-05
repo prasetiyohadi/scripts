@@ -1,7 +1,7 @@
-#!/bin/sh
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
-export ANSIBLE_VERSION=2.9.3
+export ANSIBLE_VERSION=2.9.13
 
 # install ansible
 pip install --upgrade pip cffi

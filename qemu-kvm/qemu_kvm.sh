@@ -1,11 +1,17 @@
-#!/bin/sh
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
-# install qemu-kvm
-sudo apt update
-sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager
+export OS=${OSTYPE:-'linux-gnu'}
+export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 
-# add user to libvirt group
-sudo usermod -aG kvm $USER
-sudo usermod -aG libvirt $USER
-sudo usermod -aG libvirt-qemu $USER
+if [ "${OS_TYPE}" == "linux-gnu" ]; then
+    if [ -f /etc/debian_version ]; then
+        # install qemu-kvm
+        sudo apt update
+        sudo apt install -y qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager
+        # add user to libvirt group
+        sudo usermod -aG kvm $USER
+        sudo usermod -aG libvirt $USER
+        sudo usermod -aG libvirt-qemu $USER
+    fi
+fi

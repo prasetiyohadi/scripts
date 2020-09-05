@@ -1,5 +1,5 @@
-#!/bin/bash
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 # check if go is installed
 if [ -f "`which go`" ]; then

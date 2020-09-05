@@ -1,7 +1,8 @@
-#!/bin/sh
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 # install conda
+# https://docs.conda.io/en/latest/miniconda.html
 CWD=$(dirname $0)
 curl -o /tmp/conda-installer.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 sha256sum -c $CWD/conda.sum
