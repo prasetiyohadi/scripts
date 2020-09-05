@@ -6,7 +6,7 @@ KREW_ROOT=$HOME
 
 cd "$(mktemp -d)"
 curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.{tar.gz,yaml}"
-tar zxvf krew.tar.gz
+tar -xf krew.tar.gz
 "$KREW" install --manifest=krew.yaml --archive=krew.tar.gz
 "$KREW" update
 
