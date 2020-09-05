@@ -1,17 +1,18 @@
-#!/bin/bash
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=osx-x86_64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux-x86_64
-export PROTOC3_VERSION=3.12.3
+export PROTOC3_VERSION=3.13.0
 export PROTOC3_PKG=protoc-${PROTOC3_VERSION}-${OS_TYPE}.zip
 export PROTOC3_URL=https://github.com/protocolbuffers/protobuf
 export PROTOC3_URL=${PROTOC3_URL}/releases/download
 export PROTOC3_URL=${PROTOC3_URL}/v${PROTOC3_VERSION}/${PROTOC3_PKG}
 
 # install protobuf compiler
+# https://github.com/protocolbuffers/protobuf
 cd "$(mktemp -d)"
 curl -fsSLO "${PROTOC3_URL}"
 unzip ${PROTOC3_PKG} -d protoc3

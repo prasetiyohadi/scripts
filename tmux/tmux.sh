@@ -1,15 +1,17 @@
-#!/bin/sh
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
-# install tmux and powerline-status
-sudo apt update
-sudo apt install -y python3-pip tmux
-pip3 install --user powerline-status
+export OS=${OSTYPE:-'linux-gnu'}
+export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+
+if [ "${OS_TYPE}" == "linux-gnu" ]; then
+    if [ -f /etc/debian_version ]; then
+        # install tmux and powerline
+        sudo apt update
+        sudo apt install -y powerline tmux
+    fi
+fi
 
 # install .zshrc
 CWD=$(dirname $0)
 cp $CWD/tmux.conf ~/.tmux.conf
-
-# remove python3-pip
-sudo apt purge -y python3-pip
-sudo apt autoremove -y

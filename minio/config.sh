@@ -1,5 +1,5 @@
-#!/bin/sh
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 export MINIO_ALIAS=
 export MINIO_HOST=

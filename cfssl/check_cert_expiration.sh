@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Script: check_cert_expiration.sh
 # Description: Check expiration date of domains SSL certificate
 
