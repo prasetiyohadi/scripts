@@ -1,12 +1,12 @@
-#!/bin/bash
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin_amd64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
 [[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux_arm
-export PACKER_VERSION=1.5.4
+export PACKER_VERSION=1.6.2
 
 # check packer version
 if [ -f "`which packer`" ]; then

@@ -1,12 +1,12 @@
-#!/bin/bash
-set -ex
+#!/usr/bin/env bash
+set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin_amd64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
 [[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux_arm
-export TERRAFORM_VERSION=0.12.24
+export TERRAFORM_VERSION=0.13.2
 
 # check terraform version
 if [ -f "`which terraform`" ]; then
