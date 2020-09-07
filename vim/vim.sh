@@ -7,8 +7,8 @@ export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 if [ "${OS_TYPE}" == "linux-gnu" ]; then
     if [ -f /etc/debian_version ]; then
         # install vim-nox
-        sudo apt update
-        sudo apt install -y python3-neovim python3-pynvim vim-nox
+        sudo apt-get update
+        sudo apt-get install -y python3-neovim python3-pynvim vim-nox
     fi
 fi
 

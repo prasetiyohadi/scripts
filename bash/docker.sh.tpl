@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ###
-### mongodb/docker.sh - manage mongodb container
+### PROJECT/docker.sh - manage PROJECT container
 ###
 ### Usage: docker.sh [OPTIONS] COMMAND
 ###
@@ -26,10 +26,10 @@ fail() {
 }
 
 # Initialize options variables
-PREFIX="mongodb"
+PREFIX="PROJECT"
 
 #clean##
-#clean## mongodb/docker.sh - manage mongodb container
+#clean## PROJECT/docker.sh - manage PROJECT container
 #clean##
 #clean## Usage: docker.sh clean [OPTIONS] NAME
 #clean##
@@ -69,7 +69,7 @@ clean() {
 }
 
 #deploy##
-#deploy## mongodb/docker.sh - manage mongodb container
+#deploy## PROJECT/docker.sh - manage PROJECT container
 #deploy##
 #deploy## Usage: docker.sh deploy [OPTIONS] RESOURCE
 #deploy##
@@ -77,7 +77,7 @@ clean() {
 #deploy##   -h      Show this message.
 #deploy##
 #deploy## Available resources:
-#deploy##   network Create mongodb docker network
+#deploy##   network Create PROJECT docker network
 
 help_deploy() {
     sed -Ene 's/^#deploy## ?//;T;p' "$0"
@@ -88,8 +88,8 @@ fail_deploy() {
     exit 1
 }
 
-# mongodb deployment
-mongodb() {
+# PROJECT deployment
+PROJECT() {
 }
 
 # Create network
@@ -144,7 +144,7 @@ case $CMD in
         shift $((OPTIND-1))
         [[ $# -ge 1 ]] && export CMD="$1" || export CMD=""
         case $CMD in
-            "mongodb") mongodb;;
+            "PROJECT") PROJECT;;
             "network") network;;
             *) echo "nothing to deploy" && help_deploy && exit 0;;
         esac;;

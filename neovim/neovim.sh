@@ -8,10 +8,10 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
     if [ ! -d ~/.config/nvim ]; then
         if [ -f /etc/debian_version ]; then
             # remove vim
-            sudo apt purge -y vim-tiny vim-runtime vim-common
+            sudo apt-get purge -y vim-tiny vim-runtime vim-common
             # install neovim
-            sudo apt update
-            sudo apt install -y neovim
+            sudo apt-get update
+            sudo apt-get install -y neovim
         fi
     fi
 elif [ "${OS_TYPE}" == "darwin" ]; then
