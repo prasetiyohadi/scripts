@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# install ansible (requires pipenv and pyenv)
-# https://github.com/ansible/ansible
+# install PROJECT (requires pipenv and pyenv)
+# 
 if command -v pipenv pyenv 1>/dev/null 2>&1; then
     CWD=$(dirname $0)
     cd $CWD
