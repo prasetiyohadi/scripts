@@ -7,8 +7,8 @@ export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 if [ "${OS_TYPE}" == "linux-gnu" ]; then
     if [ -f /etc/debian_version ]; then
         # install tmux and powerline
-        sudo apt update
-        sudo apt install -y powerline tmux
+        sudo apt-get update
+        sudo apt-get install -y powerline tmux
     fi
 fi
 
