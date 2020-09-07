@@ -6,8 +6,8 @@ export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 
 if [ "${OS_TYPE}" == "linux-gnu" ]; then
     if [ -f /etc/debian_version ]; then
-        sudo apt update
-        sudo apt install -y openvpn
+        sudo apt-get update
+        sudo apt-get install -y openvpn
         if [ -d ~/openvpn ]; then
             sudo mv -f /etc/openvpn{,.orig}
             sudo ln -s ~/openvpn /etc/openvpn
