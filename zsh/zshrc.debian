@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -112,15 +112,17 @@ export VISUAL="vim"
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh || true
 
+# Github
+export GH=~/github.com/prasetiyohadi
+
+# Gitlab
+export GL=~/gitlab.com/prasetiyohadi
+
 # Google Cloud SDK
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f ~/.local/google-cloud-sdk/path.zsh.inc ]; then . ~/.local/google-cloud-sdk/path.zsh.inc; fi
 # The next line enables shell command completion for gcloud.
 if [ -f ~/.local/google-cloud-sdk/completion.zsh.inc ]; then . ~/.local/google-cloud-sdk/completion.zsh.inc; fi
-
-# GPG
-export GPG_TTY=$(tty)
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 
 # Golang
 if [ -d ~/.local/go ] && [ -d ~/go ]; then
@@ -129,8 +131,14 @@ if [ -d ~/.local/go ] && [ -d ~/go ]; then
   export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 fi
 
+# GPG
+[ -n "$GPG_TTY" ] && export GPG_TTY=$(tty)
+[ -n "$SSH_AUTH_SOCK" ] && export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
 # GRC
-[ -s "/etc/grc.zsh" ] && source /etc/grc.zsh || true
+# Run the following command to enable GRC
+# echo "export ENABLE_GRC=yes" >> ~/.zprofile
+[[ -n "$ENABLE_GRC" && -s "/etc/grc.zsh" ]] && source /etc/grc.zsh || true
 
 # Kotlin
 if [ -d ~/.local/kotlin ]; then
@@ -165,8 +173,11 @@ fi
 [[ -s ~/.perlbrew/etc/zshrc ]] && source ~/./perlbrew/etc/zshrc || true
 
 # Pyenv
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
+if [ -d ~/.pyenv/bin ]; then
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    if command -v pyenv 1>/dev/null 2>&1; then
+      eval "$(pyenv init -)"
+    fi
 fi
 
 # RVM
@@ -176,7 +187,9 @@ if [ -s ~/.rvm/scripts/rvm ]; then
 fi
 
 # Starship
-which starship > /dev/null && eval "$(starship init zsh)"
+# Run the following command to enable starship
+# echo "export ENABLE_STARSHIP=yes" >> ~/.zprofile
+[ -n "$ENABLE_STARSHIP" ] && which starship > /dev/null && eval "$(starship init zsh)"
 
 # Tmux
 # Have tmux respect active venv when splitting panes
@@ -186,6 +199,9 @@ fi
 if [[ -n "$TMUX" && -n "$VIRTUAL_ENV" ]]; then
   tmux set-environment VIRTUAL_ENV $VIRTUAL_ENV
 fi
+
+# Deduplicate PATH
+export -U PATH
 
 # Functions
 
