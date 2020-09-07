@@ -132,8 +132,10 @@ if [ -d ~/.local/go ] && [ -d ~/go ]; then
 fi
 
 # GPG
-[ -n "$GPG_TTY" ] && export GPG_TTY=$(tty)
-[ -n "$SSH_AUTH_SOCK" ] && export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+if [[ ! "$(echo $OSTYPE | tr -d '[:digit:][:punct:]')" == "darwin" ]]; then
+  [ -n "$GPG_TTY" ] && export GPG_TTY=$(tty)
+  [ -n "$SSH_AUTH_SOCK" ] && export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+fi
 
 # GRC
 # Run the following command to enable GRC
@@ -252,11 +254,11 @@ fi
 [[ -s ~/.perlbrew/etc/zshrc ]] && source ~/./perlbrew/etc/zshrc || true
 
 # Pyenv
-if [ -d ~/.pyenv/bin ]; then
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+elif [ -d ~/.pyenv/bin ]; then
     export PATH="$HOME/.pyenv/bin:$PATH"
-    if command -v pyenv 1>/dev/null 2>&1; then
-      eval "$(pyenv init -)"
-    fi
+    eval "$(pyenv init -)"
 fi
 
 # RVM
