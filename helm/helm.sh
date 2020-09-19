@@ -9,6 +9,7 @@ export HELM_VERSION=v3.3.1
 export HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
 
 # install helm
+# https://helm.sh/docs/intro/install/
 if [ ! -f /tmp/ ];
 then
   wget -O /tmp/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz \
@@ -22,3 +23,7 @@ mv /tmp/helm-${HELM_VERSION}-${OS_TYPE}/${OS_TYPE}/helm ~/bin/helm
 
 rm -rf /tmp/helm-${HELM_VERSION}-${OS_TYPE} \
   /tmp/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
+
+# initialize a helm chart repository
+# https://helm.sh/docs/intro/quickstart/
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
