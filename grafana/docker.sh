@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ###
-### PROJECT/docker.sh - manage PROJECT container
+### grafana/docker.sh - manage grafana container
 ###
 ### Usage: docker.sh [OPTIONS] COMMAND
 ###
@@ -27,10 +27,10 @@ fail() {
 }
 
 # Initialize options variables
-PREFIX="PROJECT"
+PREFIX="grafana"
 
 #clean##
-#clean## PROJECT/docker.sh - manage PROJECT container
+#clean## grafana/docker.sh - manage grafana container
 #clean##
 #clean## Usage: docker.sh clean [OPTIONS] NAME
 #clean##
@@ -73,7 +73,7 @@ clean() {
 }
 
 #deploy##
-#deploy## PROJECT/docker.sh - manage PROJECT container
+#deploy## grafana/docker.sh - manage grafana container
 #deploy##
 #deploy## Usage: docker.sh deploy [OPTIONS] RESOURCE
 #deploy##
@@ -81,8 +81,8 @@ clean() {
 #deploy##   -h      Show this message.
 #deploy##
 #deploy## Available resources:
+#deploy##   grafana Create grafana infrastructure
 #deploy##   network Create docker network
-#deploy##   PROJECT Create PROJECT infrastructure
 
 help_deploy() {
     sed -Ene 's/^#deploy## ?//;T;p' "$0"
@@ -93,37 +93,43 @@ fail_deploy() {
     exit 1
 }
 
-#PROJECT##
-#PROJECT## PROJECT/docker.sh - manage PROJECT container
-#PROJECT##
-#PROJECT## Usage: docker.sh deploy PROJECT [OPTIONS]
-#PROJECT##
-#PROJECT## Options:
-#PROJECT##   -h         Show this message.
+#grafana##
+#grafana## grafana/docker.sh - manage grafana container
+#grafana##
+#grafana## Usage: docker.sh deploy grafana [OPTIONS]
+#grafana##
+#grafana## Options:
+#grafana##   -h         Show this message.
 
-help_PROJECT() {
-    sed -Ene 's/^#PROJECT## ?//;T;p' "$0"
+help_grafana() {
+    sed -Ene 's/^#grafana## ?//;T;p' "$0"
 }
 
-fail_PROJECT() {
-    help_PROJECT
+fail_grafana() {
+    help_grafana
     exit 1
 }
 
-# PROJECT deployment
-PROJECT() {
-    ERR="Deploy the network first!"
-    docker network inspect $PREFIX 1>/dev/null 2>&1 || (echo $ERR && exit 1)
+# grafana deployment
+grafana() {
+    ERR="Deploy docker network $NETWORK first!"
+    docker network inspect $NETWORK 1>/dev/null 2>&1 || (echo $ERR && exit 1)
+    docker run -d \
+    -p 3000:3000 \
+    --name=grafana \
+    --network=$NETWORK \
+    -e "GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource" \
+    grafana/grafana
 }
 
 #network##
-#network## PROJECT/docker.sh - manage PROJECT container
+#network## grafana/docker.sh - manage grafana container
 #network##
 #network## Usage: docker.sh deploy network [OPTIONS]
 #network##
 #network## Options:
 #network##   -h     Show this message.
-#network##   -n     Network name, default is PROJECT.
+#network##   -n     Network name, default is grafana.
 
 help_network() {
     sed -Ene 's/^#network## ?//;T;p' "$0"
@@ -137,7 +143,7 @@ fail_network() {
 # Create network
 network() {
     echo "creating $NETWORK network..."
-    docker network create $PREFIX
+    docker network create $NETWORK
 }
 
 # Purge deployment
@@ -187,17 +193,19 @@ case $CMD in
         shift $((OPTIND-1))
         [[ $# -ge 1 ]] && export CMD="$1" || export CMD=""
         case $CMD in
-            "PROJECT")
+            "grafana")
                 OPTIND=2
+                NETWORK=$PREFIX
                 while getopts ":n:h?" opt; do
                     case ${opt} in
-                        h) help_PROJECT && exit 0;;
-                        :) echo "Error: option -${OPTARG} requires an argument." && fail_PROJECT;;
-                        \?) echo "Error: option -${OPTARG} does not exist." && fail_PROJECT;;
+                        h) help_grafana && exit 0;;
+                        n) NETWORK=$OPTARG;;
+                        :) echo "Error: option -${OPTARG} requires an argument." && fail_grafana;;
+                        \?) echo "Error: option -${OPTARG} does not exist." && fail_grafana;;
                     esac
                 done
                 shift $((OPTIND-1))
-                PROJECT;;
+                grafana;;
             "network")
                 OPTIND=2
                 NETWORK=$PREFIX
