@@ -20,8 +20,8 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
         sudo apt-get install -y /tmp/${VAGRANT_PKG}
     fi
 elif [ "${OS_TYPE}" == "darwin" ]; then
-    brew install hashicorp/tap/consul hashicorp/tap/nomad hashicorp/tap/packer \
-        hashicorp/tap/terraform hashicorp/tap/vault
+    which brew > /dev/null && brew install hashicorp/tap/consul hashicorp/tap/nomad \
+        hashicorp/tap/packer hashicorp/tap/terraform hashicorp/tap/vault
     export VAGRANT_PKG=vagrant_${VAGRANT_VERSION}_x86_64.dmg
     export VAGRANT_URL=${VAGRANT_URL}/vagrant_${VAGRANT_VERSION}_x86_64.dmg
     wget -O ~/${VAGRANT_PKG} ${VAGRANT_URL}
