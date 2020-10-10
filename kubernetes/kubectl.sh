@@ -5,9 +5,7 @@ export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 export KUBECTL_URL=https://storage.googleapis.com/kubernetes-release/release
 export KUBECTL_STABLE=$(curl -s ${KUBECTL_URL}/stable.txt)
-if [[ ! -n ${KUBECTL_VERSION+1} ]]; then
-    export KUBECTL_VERSION=${KUBECTL_STABLE}
-fi
+[ -z "${KUBECTL_VERSION}" ] && export KUBECTL_VERSION=${KUBECTL_STABLE}
 
 if [ "${OS_TYPE}" == "linux-gnu" ]; then
     # install kubectl
