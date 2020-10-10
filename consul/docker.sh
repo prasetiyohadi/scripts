@@ -15,6 +15,7 @@ set -euo pipefail
 ###   networks  List networks
 ###   ps        List containers
 ###   purge     Remove all resources
+###   volumes   List volumes
 
 help() {
     sed -Ene 's/^### ?//;T;p' "$0"
@@ -63,6 +64,9 @@ clean() {
     elif [ "$TYPE" == "network" ]; then
         echo "deleting $name network..."
         docker network rm "$name" > /dev/null
+    elif [ "$TYPE" == "volume" ]; then
+        echo "deleting $name volume..."
+        docker volume rm "$name" > /dev/null
     else
         echo "no resource with type $TYPE"
     fi
@@ -89,8 +93,28 @@ fail_deploy() {
     exit 1
 }
 
-# Consul deployment
+#consul##
+#consul## consul/docker.sh - manage consul container
+#consul##
+#consul## Usage: docker.sh deploy consul [OPTIONS]
+#consul##
+#consul## Options:
+#consul##   -h    Show this message.
+#consul##   -n    Network name, default is consul.
+
+help_consul() {
+    sed -Ene 's/^#consul## ?//;T;p' "$0"
+}
+
+fail_consul() {
+    help_consul
+    exit 1
+}
+
+# consul deployment
 consul() {
+    ERR="Deploy the network first!"
+    docker network inspect $NETWORK 1>/dev/null 2>&1 || (echo $ERR && exit 1)
     docker pull consul
     docker run \
         -d \
@@ -104,7 +128,7 @@ consul() {
             "enable_debug":true
         }' \
         --name consul_one \
-        --network $PREFIX \
+        --network $NETWORK \
         consul agent -server -bootstrap-expect=3
     docker run \
         -d \
@@ -118,7 +142,7 @@ consul() {
             "enable_debug":true
         }' \
         --name consul_two \
-        --network $PREFIX \
+        --network $NETWORK \
         consul agent -server
     docker run \
         -d \
@@ -132,16 +156,35 @@ consul() {
             "enable_debug":true
         }' \
         --name consul_three \
-        --network $PREFIX \
+        --network $NETWORK \
         consul agent -server
     sleep 1
     docker exec consul_two consul join consul_one
     docker exec consul_three consul join consul_one
 }
 
+#network##
+#network## consul/docker.sh - manage consul container
+#network##
+#network## Usage: docker.sh deploy network [OPTIONS]
+#network##
+#network## Options:
+#network##   -h     Show this message.
+#network##   -n     Network name, default is consul.
+
+help_network() {
+    sed -Ene 's/^#network## ?//;T;p' "$0"
+}
+
+fail_network() {
+    help_network
+    exit 1
+}
+
 # Create network
 network() {
-  docker network create $PREFIX
+    echo "creating $NETWORK network..."
+    docker network create $NETWORK
 }
 
 # Purge deployment
@@ -201,13 +244,38 @@ case $CMD in
         shift $((OPTIND-1))
         [[ $# -ge 1 ]] && export CMD="$1" || export CMD=""
         case $CMD in
-            "consul") consul;;
-            "network") network;;
+            "consul")
+                OPTIND=2
+                NETWORK=$PREFIX
+                while getopts ":n:h?" opt; do
+                    case ${opt} in
+                        h) help_consul && exit 0;;
+                        n) NETWORK=$OPTARG;;
+                        :) echo "Error: option -${OPTARG} requires an argument." && fail_consul;;
+                        \?) echo "Error: option -${OPTARG} does not exist." && fail_consul;;
+                    esac
+                done
+                shift $((OPTIND-1))
+                consul;;
+            "network")
+                OPTIND=2
+                NETWORK=$PREFIX
+                while getopts ":n:h?" opt; do
+                    case ${opt} in
+                        h) help_network && exit 0;;
+                        n) NETWORK=$OPTARG;;
+                        :) echo "Error: option -${OPTARG} requires an argument." && fail_network;;
+                        \?) echo "Error: option -${OPTARG} does not exist." && fail_network;;
+                    esac
+                done
+                shift $((OPTIND-1))
+                network;;
             *) echo "nothing to deploy" && help_deploy && exit 0;;
         esac;;
     "images") docker images;;
     "networks") docker network ls;;
     "ps") docker ps -a;;
     "purge") purge;;
+    "volumes") docker volume ls;;
     *) help && exit 0;;
 esac
