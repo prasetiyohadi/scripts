@@ -12,6 +12,10 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
     elif [ -f /etc/redhat-release ]; then
         cp $CWD/zshrc.redhat ~/.zshrc
     fi
+elif [ "${OS_TYPE}" == "linux-gnueabihf" ]; then
+    if [ -f /etc/debian_version ]; then
+        cp $CWD/zshrc.raspbian ~/.zshrc
+    fi
 elif [ "${OS_TYPE}" == "darwin" ]; then
     cp $CWD/zshrc.macos ~/.zshrc
 fi
