@@ -3,6 +3,8 @@ set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+export VIM_PLUG_LOCATION=${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim
+export VIM_PLUG_URL=https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 if [ "${OS_TYPE}" == "linux-gnu" ]; then
     if [ ! -d ~/.config/nvim ]; then
@@ -13,6 +15,9 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
             sudo apt-get update
             sudo apt-get install -y neovim
         fi
+        # install vim-plug
+        # https://github.com/junegunn/vim-plug
+        sh -c 'curl -fLo ${VIM_PLUG_LOCATION} --create-dirs ${VIM_PLUG_URL}'
     fi
 elif [ "${OS_TYPE}" == "darwin" ]; then
     if [ ! -d ~/.config/nvim ]; then
