@@ -14,6 +14,12 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
         sudo dnf install --assumeyes python3-pip tmux
         sudo pip3 install powerline-status
     fi
+elif [ "${OS_TYPE}" == "linux-gnueabihf" ]; then
+    if [ -f /etc/debian_version ]; then
+        # install tmux and powerline
+        sudo apt-get update
+        sudo apt-get install -y powerline tmux
+    fi
 fi
 
 # install .zshrc
