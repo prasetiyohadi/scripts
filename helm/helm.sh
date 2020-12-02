@@ -5,6 +5,7 @@ export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin-amd64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux-amd64
+[[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux-arm
 export HELM_VERSION=v3.4.1
 export HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
 
