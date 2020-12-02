@@ -5,7 +5,7 @@ export OS=${OSTYPE:-'linux-gnu'}
 export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin-amd64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux-amd64
-export HELM_VERSION=v3.3.4
+export HELM_VERSION=v3.4.1
 export HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
 
 # install helm
@@ -26,4 +26,4 @@ rm -rf /tmp/helm-${HELM_VERSION}-${OS_TYPE} \
 
 # initialize a helm chart repository
 # https://helm.sh/docs/intro/quickstart/
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo add stable https://charts.helm.sh/stable
