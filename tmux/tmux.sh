@@ -9,6 +9,10 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
         # install tmux and powerline
         sudo apt-get update
         sudo apt-get install -y powerline tmux
+    elif [ -f /etc/redhat-release ]; then
+        # install tmux and powerline
+        sudo dnf install --assumeyes python3-pip tmux
+        sudo pip3 install powerline-status
     fi
 fi
 
