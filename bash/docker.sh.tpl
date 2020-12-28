@@ -99,7 +99,8 @@ fail_deploy() {
 #PROJECT## Usage: docker.sh deploy PROJECT [OPTIONS]
 #PROJECT##
 #PROJECT## Options:
-#PROJECT##   -h         Show this message.
+#PROJECT##   -h     Show this message.
+#PROJECT##   -n     Network name, default is PROJECT.
 
 help_PROJECT() {
     sed -Ene 's/^#PROJECT## ?//;T;p' "$0"
@@ -113,7 +114,7 @@ fail_PROJECT() {
 # PROJECT deployment
 PROJECT() {
     ERR="Deploy the network first!"
-    docker network inspect $PREFIX 1>/dev/null 2>&1 || (echo $ERR && exit 1)
+    docker network inspect $NETWORK 1>/dev/null 2>&1 || (echo $ERR && exit 1)
 }
 
 #network##
@@ -137,7 +138,7 @@ fail_network() {
 # Create network
 network() {
     echo "creating $NETWORK network..."
-    docker network create $PREFIX
+    docker network create $NETWORK
 }
 
 # Purge deployment
@@ -189,9 +190,11 @@ case $CMD in
         case $CMD in
             "PROJECT")
                 OPTIND=2
+                NETWORK=$PREFIX
                 while getopts ":n:h?" opt; do
                     case ${opt} in
                         h) help_PROJECT && exit 0;;
+                        n) NETWORK=$OPTARG;;
                         :) echo "Error: option -${OPTARG} requires an argument." && fail_PROJECT;;
                         \?) echo "Error: option -${OPTARG} does not exist." && fail_PROJECT;;
                     esac
