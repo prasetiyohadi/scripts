@@ -104,7 +104,7 @@ set softtabstop=2               " insert/delete 2 spaces when hitting a TAB/BACK
 set t_Co=256
 set tabstop=2                   " a hard TAB displays as 2 columns
 set termencoding=utf-8
-set textwidth=141               " lines longer than 142 columns will be broken 
+set textwidth=79                " lines longer than 79 columns will be broken 
 
 " Go
 au FileType go nmap <leader>r <Plug>(go-run)
