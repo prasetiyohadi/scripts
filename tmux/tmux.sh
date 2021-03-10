@@ -20,6 +20,10 @@ elif [ "${OS_TYPE}" == "linux-gnueabihf" ]; then
         sudo apt-get update
         sudo apt-get install -y powerline tmux
     fi
+elif [ "${OS_TYPE}" == "darwin" ]; then
+    # install powerline, python, and tmux
+    which brew > /dev/null && brew install python tmux
+    pip3 install powerline-status psutil
 fi
 
 # install .zshrc
