@@ -23,6 +23,9 @@ elif [ "${OS_TYPE}" == "darwin" ]; then
     if [ ! -d ~/.config/nvim ]; then
         # install neovim
         which brew > /dev/null && brew install neovim
+        # install vim-plug
+        # https://github.com/junegunn/vim-plug
+        sh -c 'curl -fLo ${VIM_PLUG_LOCATION} --create-dirs ${VIM_PLUG_URL}'
     fi
 fi
 
