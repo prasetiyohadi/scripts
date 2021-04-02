@@ -52,12 +52,12 @@ export UPDATE_ZSH_DAYS=7
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  history-substring-search
-  kubectl
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-) 
+    git
+    history-substring-search
+    kubectl
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+)
 bindkey '^ ' autosuggest-accept
 
 source $ZSH/oh-my-zsh.sh
@@ -74,8 +74,18 @@ source $ZSH/oh-my-zsh.sh
 # Bat
 alias bat='batcat'
 
+# Clipboard access
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
+
 # Current working directory (cwd)
 alias cwd='pwd | awk -F/ "{print \$NF}"'
+
+# Docker
+alias dexit='docker exec -it'
+alias dex='docker exec'
+alias drund='docker run -d --rm'
+alias drunit="docker run -d --entrypoint '' --init --rm"
 
 # Proxy
 PROXY_SRC='http://167.205.50.80:39154'
@@ -101,8 +111,19 @@ export ANSIBLE_NOCOWS=1
 #export ANSIBLE_ACTION_PLUGINS=$ANSIBLE_ACTION_PLUGINS:$ara_location/plugins/actions
 #export ANSIBLE_LIBRARY=$ANSIBLE_LIBRARY:$ara_location/plugins/modules
 
+# Bitbucket
+export BB=~/projects/src/bitbucket.org
+
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
+
+# Deno
+if [ -f ~/.deno/bin/deno ]; then
+    export DENO_INSTALL=~/.deno
+    export PATH="$PATH:$DENO_INSTALL/bin"
+    mkdir -p ~/.oh-my-zsh/custom/plugins/deno
+    deno completions zsh > ~/.oh-my-zsh/custom/plugins/deno/_deno
+fi
 
 # Editor
 # Preferred editor for local and remote sessions
@@ -113,10 +134,12 @@ export VISUAL="vim"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh || true
 
 # Github
-export GH=~/github.com/prasetiyohadi
+export GH=~/projects/src/github.com
 
 # Gitlab
-export GL=~/gitlab.com/prasetiyohadi
+export GL=~/projects/src/gitlab.com
+export GBL=~/projects/src/gitlab.cloud.bukalapak.io
+export GBLP=~/projects/src/gitlab.preprod.bukalapak.io
 
 # Google Cloud SDK
 # The next line updates PATH for the Google Cloud SDK.
@@ -126,15 +149,15 @@ if [ -f ~/.local/google-cloud-sdk/completion.zsh.inc ]; then . ~/.local/google-c
 
 # Golang
 if [ -d ~/.local/go ] && [ -d ~/go ]; then
-  export GOROOT=~/.local/go
-  export GOPATH=~/go
-  export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+    export GOROOT=~/.local/go
+    export GOPATH=~/go
+    export PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
 fi
 
 # GPG
 if [[ ! "$(echo $OSTYPE | tr -d '[:digit:][:punct:]')" == "darwin" ]]; then
-  [[ ! -n "${GPG_TTY+1}" ]] && export GPG_TTY=$(tty)
-  [[ ! -n "${SSH_AUTH_SOCK+1}" ]] && export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+    [[ ! -n "${GPG_TTY+1}" ]] && export GPG_TTY=$(tty)
+    [[ ! -n "${SSH_AUTH_SOCK+1}" ]] && export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 fi
 
 # GRC
@@ -142,10 +165,16 @@ fi
 # echo "export ENABLE_GRC=yes" >> ~/.zprofile
 [[ -n "$ENABLE_GRC" && -s "/etc/grc.zsh" ]] && source /etc/grc.zsh || true
 
+# Julia
+if [ -d ~/.local/julia ]; then
+    export JULIAROOT=~/.local/julia
+    export PATH="$PATH:$JULIAROOT/bin"
+fi
+
 # Kotlin
 if [ -d ~/.local/kotlin ]; then
-  export KTROOT=~/.local/kotlin
-  export PATH="$PATH:$KTROOT/bin"
+    export KTROOT=~/.local/kotlin
+    export PATH="$PATH:$KTROOT/bin"
 fi
 
 # Krew
@@ -161,18 +190,27 @@ export LC_ALL=en_US.UTF-8
 
 # Minio client
 if [ -s ~/bin/mc ]; then
-  autoload -U +X bashcompinit && bashcompinit
-  complete -o nospace -C ~/bin/mc mc
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C ~/bin/mc mc
 fi
+
+# Nix
+if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+# Nix: Direnv
+which direnv > /dev/null && eval "$(direnv hook zsh)"
 
 # NVM
 if [ -s ~/.nvm/nvm.sh ]; then
-  export NVM_DIR=~/.nvm
-  source $NVM_DIR/nvm.sh
+    export NVM_DIR=~/.nvm
+    source $NVM_DIR/nvm.sh
 fi
 
 # Perlbrew
 [[ -s ~/.perlbrew/etc/zshrc ]] && source ~/./perlbrew/etc/zshrc || true
+
+# Poetry
+[[ -d "${HOME}/.poetry/bin" ]] && export PATH="$HOME/.poetry/bin:$PATH"
 
 # Pyenv
 if command -v pyenv 1>/dev/null 2>&1; then
@@ -184,8 +222,11 @@ fi
 
 # RVM
 if [ -s ~/.rvm/scripts/rvm ]; then
-  export rvm_ignore_gemrc_issues=1
-  source ~/.rvm/scripts/rvm
+    export rvm_ignore_gemrc_issues=1
+    export rvm_silence_path_mismatch_check_flag=1
+    source ~/.rvm/scripts/rvm
+    # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+    export PATH="$PATH:$HOME/.rvm/bin"
 fi
 
 # Starship
@@ -193,16 +234,22 @@ fi
 # echo "export ENABLE_STARSHIP=yes" >> ~/.zprofile
 [ -n "$ENABLE_STARSHIP" ] && which starship > /dev/null && eval "$(starship init zsh)"
 
+# Terraform
+if [ -s ~/bin/terraform ]; then
+    autoload -U +X bashcompinit && bashcompinit
+    complete -o nospace -C ~/bin/terraform terraform
+fi
+
 # Tmux
 # Have tmux respect active venv when splitting panes
 if [[ -n "${VIRTUAL_ENV+1}" ]]; then
-  source $VIRTUAL_ENV/bin/activate
+    source $VIRTUAL_ENV/bin/activate
 fi
 if [[ -n "${TMUX+1}" && -n "${VIRTUAL_ENV+1}" ]]; then
-  tmux set-environment VIRTUAL_ENV $VIRTUAL_ENV
+    tmux set-environment VIRTUAL_ENV $VIRTUAL_ENV
 fi
 if [[ -n "${TMUX+1}" && -n "${SSH_AUTH_SOCK+1}" ]]; then
-  tmux set-environment SSH_AUTH_SOCK $SSH_AUTH_SOCK
+    tmux set-environment SSH_AUTH_SOCK $SSH_AUTH_SOCK
 fi
 
 # Deduplicate PATH
