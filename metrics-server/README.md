@@ -5,6 +5,7 @@
 * install helm repository
 ```
 helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
 ```
 
 * create metrics-server namespace
