@@ -28,5 +28,10 @@ rm -rf /tmp/helm-${HELM_VERSION}-${OS_TYPE} \
 # initialize a helm chart repository
 # https://helm.sh/docs/intro/quickstart/
 helm repo add stable https://charts.helm.sh/stable
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add gitlab https://charts.gitlab.io
+helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo add jetstack https://charts.jetstack.io
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
