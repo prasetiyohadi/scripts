@@ -6,7 +6,7 @@ export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
 [[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin-amd64
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux-amd64
 [[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux-arm
-export HELM_VERSION=v3.5.0
+export HELM_VERSION=v3.5.2
 export HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
 
 # install helm
@@ -28,3 +28,5 @@ rm -rf /tmp/helm-${HELM_VERSION}-${OS_TYPE} \
 # initialize a helm chart repository
 # https://helm.sh/docs/intro/quickstart/
 helm repo add stable https://charts.helm.sh/stable
+helm repo add gitlab https://charts.gitlab.io
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
