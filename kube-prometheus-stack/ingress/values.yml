@@ -1,0 +1,16 @@
+# Enable ingress with domain HOST
+alertmanager:
+  ingress:
+    enabled: true
+    hosts:
+      - alertmanager.HOST
+grafana:
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.HOST
+prometheus:
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.HOST

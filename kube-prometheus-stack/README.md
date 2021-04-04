@@ -1,19 +1,39 @@
 # Kube-prometheus-stack
 
+Kube-prometheus-stack [Helm Chart page][1]
+
 ## Getting Started
 
-* add helm repository
+* Add Helm repo
 ```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 ```
 
-* create prometheus namespace
+* Create namespace
 ```
 kubectl create namespace prometheus
 ```
 
-* install kube-prometheus-stack helm Chart
+* Install kube-prometheus-stack chart
 ```
-helm install --namespace prometheus kube-prometheus prometheus-community/kube-prometheus-stack
+helm install --namespace prometheus prometheus prometheus-community/kube-prometheus-stack
 ```
+
+* Use values from the file ingress/values.yml to enable ingress
+```
+export HOST=<ingress_domain>
+sed -i "s/HOST/$HOST/g" ingress/values.yml
+helm install --namespace prometheus prometheus prometheus-community/kube-prometheus-stack --values ingress/values.yml
+```
+
+## Note for ARM/ARM64 Support
+
+Github issue: https://github.com/prometheus-community/helm-charts/issues/373
+
+* Install kube-prometheus-stack chart in ARM/ARM64
+```
+helm install --namespace prometheus prometheus prometheus-community/kube-prometheus-stack --values arm/values.yml
+```
+
+[1]:[https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/README.md]
