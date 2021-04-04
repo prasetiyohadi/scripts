@@ -194,6 +194,9 @@ if [ -s ~/bin/mc ]; then
     complete -o nospace -C ~/bin/mc mc
 fi
 
+# Nim
+[[ -d "${HOME}/.local/nim/bin" ]] && export PATH="${PATH}:${HOME}/.local/nim/bin:${HOME}/.nimble/bin"
+
 # Nix
 if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
