@@ -15,6 +15,10 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
                 libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
                 libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
                 python-openssl git
+        elif [ -f /etc/redhat-release ]; then
+            sudo yum install @development zlib-devel bzip2 bzip2-devel \
+                readline-devel sqlite sqlite-devel openssl-devel xz xz-devel \
+                libffi-devel findutils
         fi
         # install pyenv
         curl https://pyenv.run | bash
