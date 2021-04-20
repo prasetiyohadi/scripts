@@ -1,0 +1,44 @@
+--- init.vim	2021-04-05 17:14:51.092246064 +0700
++++ rust.vim	2021-04-05 18:07:05.007060852 +0700
+@@ -76,6 +76,26 @@
+ "" Custom bundles
+ "*****************************************************************************
+ 
++" rust
++" Vim racer
++Plug 'racer-rust/vim-racer'
++
++" Rust.vim
++Plug 'rust-lang/rust.vim'
++
++" Async.vim
++Plug 'prabirshrestha/async.vim'
++
++" Vim lsp
++Plug 'prabirshrestha/vim-lsp'
++
++" Asyncomplete.vim
++Plug 'prabirshrestha/asyncomplete.vim'
++
++" Asyncomplete lsp.vim
++Plug 'prabirshrestha/asyncomplete-lsp.vim'
++
++
+ "*****************************************************************************
+ "*****************************************************************************
+ 
+@@ -419,6 +439,14 @@
+ "" Custom configs
+ "*****************************************************************************
+ 
++" rust
++" Vim racer
++au FileType rust nmap gd <Plug>(rust-def)
++au FileType rust nmap gs <Plug>(rust-def-split)
++au FileType rust nmap gx <Plug>(rust-def-vertical)
++au FileType rust nmap <leader>gd <Plug>(rust-doc)
++
++
+ 
+ "*****************************************************************************
+ "*****************************************************************************
