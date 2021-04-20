@@ -21,6 +21,9 @@ install_linux() {
         # install neovim
         sudo apt-get update
         sudo apt-get install -y neovim
+    elif [ -f /etc/redhat-release ]; then
+        # install neovim
+        sudo dnf install --assumeyes neovim
     fi
     install_vim_plug
 }
