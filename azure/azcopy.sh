@@ -2,7 +2,8 @@
 set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+export OS_TYPE
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
 export AZCOPY_VERSION=10.8.0
 export AZCOPY_TMP=azcopy_${OS_TYPE}_${AZCOPY_VERSION}
