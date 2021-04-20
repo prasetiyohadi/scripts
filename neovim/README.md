@@ -51,3 +51,25 @@ let g:vim_bootstrap_editor = "nvim"				" nvim or vim
 let g:vim_bootstrap_theme = "dracula"
 let g:vim_bootstrap_frams = ""
 ```
+
+## Configuration for Debian
+
+Debian buster still provides neovim with version 0.3 which is not compatible with configuration generated from vim-bootstrap.com. We need to add the following changes to the vim configuration for Debian.
+
+`init.vim`
+
+```
+" comment these configuration
+"au TermEnter * setlocal scrolloff=0
+"au TermLeave * setlocal scrolloff=3
+```
+
+`local_init.vim`
+
+```
+" disable rnvimr plugin
+let g:rnvimr_ex_enable = 0
+
+" disable go warning for neovim version
+let g:go_version_warning = 0
+```
