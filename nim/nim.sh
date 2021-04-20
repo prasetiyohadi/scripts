@@ -2,7 +2,8 @@
 set -euo pipefail
 
 export OS="${OSTYPE:-'linux-gnu'}"
-export OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
+OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
+export OS_TYPE
 [[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_x64
 export NIM_VERSION=1.4.4
 export NIM_INSTALL_PATH=~/.local
@@ -21,7 +22,7 @@ clean() {
 download() {
     wget -O "/tmp/$NIM_PKG" "$NIM_URL"
     wget -O "/tmp/$NIM_PKG".sha256 "$NIM_URL".sha256
-    echo "$(cat "/tmp/$NIM_PKG.sha256"|awk {'print $1'})" "/tmp/$NIM_PKG" > /tmp/nim.sum
+    echo "$(awk '{print $1}' "/tmp/$NIM_PKG.sha256")" "/tmp/$NIM_PKG" > /tmp/nim.sum
     sha256sum -c /tmp/nim.sum
     tar -xf "/tmp/$NIM_PKG" -C /tmp
     mkdir -p "$NIM_INSTALL_PATH"

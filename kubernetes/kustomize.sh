@@ -2,7 +2,8 @@
 set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+OS_TYPE=`echo ${OS} | tr -d ".[:digit:]"`
+export OS_TYPE
 
 if [ "${OS_TYPE}" != "linux-gnueabihf" ]; then
     # install kustomize
