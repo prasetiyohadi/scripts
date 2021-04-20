@@ -51,7 +51,7 @@ configure() {
 }
 
 main() {
-    if [ "$OS_TYPE" == "linux-gnu" ]; then
+    if [[ "$OS_TYPE" == "linux-gnu" || "$OS_TYPE" == "linux-gnueabihf" ]]; then
         echo "This script will install neovim."
         if [[ -d $HOME/.config/nvim ]]; then
             read -p "$HOME/.config/nvim already exists. Replace[yn]? " -n 1 -r
