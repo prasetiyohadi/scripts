@@ -2,19 +2,36 @@
 set -euxo pipefail
 
 export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
-[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=macosx
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+export OS_TYPE
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=linux
-export ALIYUN_CLI_VERSION=3.0.56
-export ALIYUN_CLI_URL=https://github.com/aliyun/aliyun-cli/releases/download
+export ALIYUN_CLI_VERSION=3.0.73
+export ALIYUN_CLI_PKG="aliyun-cli-$OS_TYPE-$ALIYUN_CLI_VERSION-amd64.tgz"
+export ALIYUN_CLI_URL="https://aliyuncli.alicdn.com/$ALIYUN_CLI_PKG"
 
 # install aliyun CLI
 # https://github.com/aliyun/aliyun-cli
-if [ ! -f "/tmp/aliyun-cli-${OS_TYPE}-${ALIYUN_CLI_VERSION}-amd64.tgz" ]; then
-  wget -O /tmp/aliyun-cli-${OS_TYPE}-${ALIYUN_CLI_VERSION}-amd64.tgz \
-    ${ALIYUN_CLI_URL}/v${ALIYUN_CLI_VERSION}/aliyun-cli-${OS_TYPE}-${ALIYUN_CLI_VERSION}-amd64.tgz
-fi
-mkdir -p ~/bin
-tar -xf /tmp/aliyun-cli-${OS_TYPE}-${ALIYUN_CLI_VERSION}-amd64.tgz -C ~/bin
+clean() {
+    rm -f "/tmp/$ALIYUN_CLI_PKG"
+}
 
-rm -f /tmp/aliyun-cli-${OS_TYPE}-${ALIYUN_CLI_VERSION}-amd64.tgz
+download() {
+    wget -O "/tmp/$ALIYUN_CLI_PKG" "$ALIYUN_CLI_URL"
+}
+
+install() {
+    mkdir -p ~/bin
+    tar -xf "/tmp/$ALIYUN_CLI_PKG" -C ~/bin
+}
+
+main() {
+    download
+    install
+    clean
+}
+
+if [[ "${OS_TYPE}" == "linux" ]]; then
+    main
+elif [ "${OS_TYPE}" == "darwin" ]; then
+    which brew > /dev/null && brew install aliyun-cli
+fi
