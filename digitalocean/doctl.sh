@@ -2,30 +2,30 @@
 set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
-APP_VERSION=3.0.73
-OS_TYPE_DARWIN="macosx-$APP_VERSION-amd64"
-OS_TYPE_LINUX_AMD64="linux-$APP_VERSION-amd64"
-[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=$OS_TYPE_DARWIN
-[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-APP_BIN=aliyun
-APP_SRC="$APP_BIN-cli-$OS_TYPE"
-APP_PKG="$APP_SRC.tgz"
-APP_URL="https://aliyuncli.alicdn.com/$APP_PKG"
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-amd64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE="$OS_TYPE_LINUX_AMD64"
+APP_BIN=doctl
+APP_VERSION=1.59.0
+APP_SRC="$APP_BIN-$APP_VERSION-$OS_TYPE"
+APP_PKG="$APP_SRC.tar.gz"
+APP_URL="https://github.com/digitalocean/doctl/releases"
+APP_URL="$APP_URL/download/v$APP_VERSION/$APP_PKG"
 
-# install aliyun CLI
-# https://github.com/aliyun/aliyun-cli
 clean() {
-    rm -f "/tmp/$APP_PKG"
+    rm -r "/tmp/$APP_PKG" "/tmp/$APP_SRC"
 }
 
 download() {
     wget -O "/tmp/$APP_PKG" "$APP_URL"
+    mkdir -p "/tmp/$APP_SRC"
+    tar -xf "/tmp/$APP_PKG" -C "/tmp/$APP_SRC"
 }
 
 install() {
     mkdir -p ~/bin
-    tar -xf "/tmp/$APP_PKG" -C ~/bin
+    mv "/tmp/$APP_SRC/$APP_BIN" ~/bin
 }
 
 setup() {
@@ -52,7 +52,7 @@ main_linux() {
 main_darwin() {
     APP_VERSION=latest
     echo "This script will install $APP_BIN version $APP_VERSION using brew."
-    which brew > /dev/null && brew install $APP_BIN
+    which brew > /dev/null && brew install "$APP_BIN"
 }
 
 main() {
