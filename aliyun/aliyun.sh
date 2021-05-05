@@ -1,37 +1,66 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
-export OS_TYPE
-[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=linux
-export ALIYUN_CLI_VERSION=3.0.73
-export ALIYUN_CLI_PKG="aliyun-cli-$OS_TYPE-$ALIYUN_CLI_VERSION-amd64.tgz"
-export ALIYUN_CLI_URL="https://aliyuncli.alicdn.com/$ALIYUN_CLI_PKG"
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
+APP_VERSION=3.0.73
+OS_TYPE_DARWIN="macosx-$APP_VERSION-amd64"
+OS_TYPE_LINUX_AMD64="linux-$APP_VERSION-amd64"
+[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=$OS_TYPE_DARWIN
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=aliyun
+APP_SRC="$APP_BIN-cli-$OS_TYPE"
+APP_PKG="$APP_SRC.tgz"
+APP_URL="https://aliyuncli.alicdn.com/$APP_PKG"
 
 # install aliyun CLI
 # https://github.com/aliyun/aliyun-cli
 clean() {
-    rm -f "/tmp/$ALIYUN_CLI_PKG"
+    rm -f "/tmp/$APP_PKG"
 }
 
 download() {
-    wget -O "/tmp/$ALIYUN_CLI_PKG" "$ALIYUN_CLI_URL"
+    wget -O "/tmp/$APP_PKG" "$APP_URL"
 }
 
 install() {
     mkdir -p ~/bin
-    tar -xf "/tmp/$ALIYUN_CLI_PKG" -C ~/bin
+    tar -xf "/tmp/$APP_PKG" -C ~/bin
 }
 
-main() {
+setup() {
     download
     install
     clean
 }
 
-if [[ "${OS_TYPE}" == "linux" ]]; then
-    main
-elif [ "${OS_TYPE}" == "darwin" ]; then
-    which brew > /dev/null && brew install aliyun-cli
-fi
+main_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -s "$HOME/bin/$APP_BIN" ]; then
+        read -p "$HOME/bin/$APP_BIN already exists. Replace[yn]? " -n 1 -r
+        echo
+        if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+            setup
+        else
+            echo "Installation cancelled."
+        fi
+    else
+        setup
+    fi
+}
+
+main_darwin() {
+    APP_VERSION=latest
+    echo "This script will install $APP_BIN version $APP_VERSION using brew."
+    which brew > /dev/null && brew install $APP_BIN
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        main_linux
+    elif [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        main_darwin
+    fi
+}
+
+main
