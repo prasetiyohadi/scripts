@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
 # install ansible (requires pipenv and pyenv)
 # https://github.com/ansible/ansible
 if command -v pipenv pyenv 1>/dev/null 2>&1; then
-    CWD=$(dirname $0)
-    cd $CWD
+    CWD=$(dirname "$0")
+    cd "$CWD"
     pipenv run pip install -U setuptools
     pipenv install
     pipenv shell
