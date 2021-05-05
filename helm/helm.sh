@@ -1,70 +1,84 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-OS_TYPE=`echo ${OS} | tr -d ".[:digit:]"`
-export OS_TYPE
-[[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin-amd64
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux-amd64
-[[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux-arm
-export HELM_VERSION=v3.5.3
-export HELM_URL=https://get.helm.sh/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
+OS="${OSTYPE:-'linux-gnu'}"
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin-amd64
+OS_TYPE_LINUX_AMD64=linux-amd64
+OS_TYPE_LINUX_ARM=linux-arm
+[ "$OS_TYPE" == "darwin" ] && export OS_TYPE="$OS_TYPE_DARWIN"
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE="$OS_TYPE_LINUX_AMD64"
+[ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE="$OS_TYPE_LINUX_ARM"
+APP_BIN=helm
+APP_VERSION=v3.5.4
+APP_SRC="$APP_BIN-$APP_VERSION-$OS_TYPE"
+APP_PKG="$APP_SRC.tar.gz"
+APP_URL="https://get.helm.sh/$APP_PKG"
 
 # install helm
 # https://helm.sh/docs/intro/install/
 clean() {
-    rm -rf /tmp/helm-${HELM_VERSION}-${OS_TYPE} \
-        /tmp/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz
-
+    rm -rf /tmp/$APP_SRC /tmp/$APP_PKG
 }
 
 download() {
-    wget -O /tmp/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz ${HELM_URL}
+    wget -O /tmp/$APP_PKG $APP_URL
 }
 
 install() {
-    echo 
-    mkdir -p /tmp/helm-${HELM_VERSION}-${OS_TYPE}
-    tar -xf /tmp/helm-${HELM_VERSION}-${OS_TYPE}.tar.gz \
-        -C /tmp/helm-${HELM_VERSION}-${OS_TYPE}
-    mkdir -p ~/bin
-    mv /tmp/helm-${HELM_VERSION}-${OS_TYPE}/${OS_TYPE}/helm ~/bin/helm
+    mkdir -p /tmp/$APP_SRC ~/bin
+    tar -xf /tmp/$APP_PKG -C /tmp/$APP_SRC
+    mv /tmp/$APP_SRC/$OS_TYPE/$APP_BIN ~/bin
 }
 
 # initialize a helm chart repository
 # https://helm.sh/docs/intro/quickstart/
-repository() {
-    helm repo add stable https://charts.helm.sh/stable
-    helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm repo add gitlab https://charts.gitlab.io
-    helm repo add hashicorp https://helm.releases.hashicorp.com
-    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-    helm repo add jetstack https://charts.jetstack.io
-    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-    helm repo update
+add_repo() {
+    $APP_BIN repo add stable https://charts.helm.sh/stable
+    $APP_BIN repo add bitnami https://charts.bitnami.com/bitnami
+    $APP_BIN repo add gitlab https://charts.gitlab.io
+    $APP_BIN repo add hashicorp https://helm.releases.hashicorp.com
+    $APP_BIN repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    $APP_BIN repo add jetstack https://charts.jetstack.io
+    $APP_BIN repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    $APP_BIN repo update
 }
 
-main() {
+setup() {
     download
     install
     clean
-    repository
+    add_repo
 }
 
-if [[ "$OS_TYPE" == "linux-amd64" || "$OS_TYPE" == "linux-arm" ]]; then
-    echo "This script will install helm version $HELM_VERSION."
-    if [[ -s $HOME/bin/helm ]]; then
-        read -p "$HOME/bin/helm already exists. Replace[yn]? " -n 1 -r
+main_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -s "$HOME/bin/$APP_BIN" ]; then
+        read -p "$HOME/bin/$APP_BIN already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            main
+            setup
         else
             echo "Installation cancelled."
         fi
     else
-        main
+        setup
     fi
-elif [[ "$OS_TYPE" == "darwin-amd64" ]]; then
-    echo "This script will install helm version $HELM_VERSION using brew."
-    which brew > /dev/null && brew install helm
-fi
+}
+
+main_darwin() {
+    echo "This script will install $APP_BIN version $APP_VERSION using brew."
+    which brew > /dev/null && brew install $APP_BIN
+    add_repo
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ] \
+        || [ "$OS_TYPE" == "$OS_TYPE_LINUX_ARM" ]; then
+        main_linux
+    elif [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        main_darwin
+    fi
+}
+
+main
