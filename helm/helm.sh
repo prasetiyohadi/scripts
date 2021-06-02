@@ -10,7 +10,28 @@ OS_TYPE_LINUX_ARM=linux-arm
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE="$OS_TYPE_LINUX_AMD64"
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE="$OS_TYPE_LINUX_ARM"
 APP_BIN=helm
-APP_VERSION=v3.5.4
+APP_VERSION=""
+DESIRED_VERSION="${DESIRED_VERSION:-}"
+
+HAS_CURL="$(type "curl" &> /dev/null && echo true || echo false)"
+HAS_WGET="$(type "wget" &> /dev/null && echo true || echo false)"
+
+# checkDesiredVersion checks if the desired version is available.
+check_desired_version() {
+    if [ "$DESIRED_VERSION" == "" ]; then
+        # Get tag from release URL
+        local latest_release_url="https://github.com/helm/helm/releases"
+        if [ "${HAS_CURL}" == "true" ]; then
+            APP_VERSION=$(curl -Ls $latest_release_url | grep 'href="/helm/helm/releases/tag/v3.[0-9]*.[0-9]*\"' | grep -v no-underline | head -n 1 | cut -d '"' -f 2 | awk '{n=split($NF,a,"/");print a[n]}' | awk 'a !~ $0{print}; {a=$0}')
+        elif [ "${HAS_WGET}" == "true" ]; then
+            APP_VERSION=$(wget $latest_release_url -O - 2>&1 | grep 'href="/helm/helm/releases/tag/v3.[0-9]*.[0-9]*\"' | grep -v no-underline | head -n 1 | cut -d '"' -f 2 | awk '{n=split($NF,a,"/");print a[n]}' | awk 'a !~ $0{print}; {a=$0}')
+        fi
+    else
+        APP_VERSION=$DESIRED_VERSION
+    fi
+}
+
+check_desired_version
 APP_SRC="$APP_BIN-$APP_VERSION-$OS_TYPE"
 APP_PKG="$APP_SRC.tar.gz"
 APP_URL="https://get.helm.sh/$APP_PKG"
@@ -18,17 +39,17 @@ APP_URL="https://get.helm.sh/$APP_PKG"
 # install helm
 # https://helm.sh/docs/intro/install/
 clean() {
-    rm -rf /tmp/$APP_SRC /tmp/$APP_PKG
+    rm -rf "/tmp/$APP_SRC" "/tmp/$APP_PKG"
 }
 
 download() {
-    wget -O /tmp/$APP_PKG $APP_URL
+    wget -O "/tmp/$APP_PKG" "$APP_URL"
 }
 
 install() {
-    mkdir -p /tmp/$APP_SRC ~/bin
-    tar -xf /tmp/$APP_PKG -C /tmp/$APP_SRC
-    mv /tmp/$APP_SRC/$OS_TYPE/$APP_BIN ~/bin
+    mkdir -p "/tmp/$APP_SRC" ~/bin
+    tar -xf "/tmp/$APP_PKG" -C "/tmp/$APP_SRC"
+    mv "/tmp/$APP_SRC/$OS_TYPE/$APP_BIN" ~/bin
 }
 
 # initialize a helm chart repository
