@@ -42,12 +42,17 @@ nvim +PlugInstall +qall
 The current configuration using the base configuration with these patches applied:
 
 1. go
+2. html
+3. javascript
+4. python
+5. ruby
+6. rust
 
 The current bootstrap keys
 
 ```
-let g:vim_bootstrap_langs = "go"
-let g:vim_bootstrap_editor = "nvim"				" nvim or vim
+let g:vim_bootstrap_langs = "go,html,javascript,python,ruby,rust"
+let g:vim_bootstrap_editor = "nvim"                             " nvim or vim
 let g:vim_bootstrap_theme = "dracula"
 let g:vim_bootstrap_frams = ""
 ```

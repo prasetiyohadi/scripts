@@ -243,6 +243,12 @@ augroup pencil
   autocmd FileType tex call pencil#init({'wrap' : 'soft'})
 augroup END
 
+""""""""""""""""""""""""""""""
+" VIMWIKI
+""""""""""""""""""""""""""""""
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
+
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
@@ -351,3 +357,14 @@ nnoremap <Leader><BS> :noh<cr>
 
 " Activates Twiddle case to switch between cases of selected text
 vnoremap ~ y:call setreg('', TwiddleCase(@"), getregtype(''))<CR>gv""Pgv
+
+" Configure yaml file
+augroup vimrc-yaml
+  autocmd!
+  autocmd FileType yaml set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
+augroup END
+
+" Configure fortran
+let fortran_free_source=1
+let fortran_do_enddo=1
+let fortran_more_precise=1
