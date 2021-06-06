@@ -1,5 +1,9 @@
 # Helm
 
+Helm install script
+
+    curl -fsSL -o helm/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+
 ## Getting started
 
 Commands
