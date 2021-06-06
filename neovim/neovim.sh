@@ -24,6 +24,7 @@ install_linux() {
     elif [ -f /etc/redhat-release ]; then
         # install neovim
         sudo dnf install --assumeyes neovim
+        sudo alternatives --install /usr/bin/vim vim /usr/bin/nvim 900
     fi
     install_vim_plug
 }
@@ -44,6 +45,7 @@ configure() {
 
     # setup python virtual environment
     python3 -m venv ~/.config/nvim/env
+    ~/.config/nvim/env/bin/pip install -U pip
     ~/.config/nvim/env/bin/pip install pynvim
 
     # install plugins

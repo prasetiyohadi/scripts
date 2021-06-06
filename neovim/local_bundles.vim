@@ -16,7 +16,7 @@ else
 endif
 
 " completion for golang
-Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
+"Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
 
 " Preview markdown on your modern browser with synchronised scrolling and flexible configuration.
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -87,3 +87,6 @@ Plug 'tpope/vim-obsession'
 
 " Rethinking Vim as a tool for writing
 Plug 'preservim/vim-pencil'
+
+" Vimwiki
+Plug 'vimwiki/vimwiki'
