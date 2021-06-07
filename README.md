@@ -2,9 +2,7 @@
 
 Useful scripts to maintain and manage infrastructures.
 
-# Unix
-
-## [UNIX rules for life]
+## [UNIX rules for life](https://stormrider.io/rules/)
 
 * Keep it simple: It's cheaper and easier to carry around.
 * Do one thing at a time: Multitasking is a lie.
@@ -16,5 +14,3 @@ Useful scripts to maintain and manage infrastructures.
 * Use what you have: never dig diamonds with a brick of gold.
 * Have faith; all's possible, except maybe skiing through a revolving door.
 * Think ahead, but don't worship your plans; remember today is the first day of the rest of your learning experience.
-
-[UNIX rules for life]: http://stormrider.io/ninety-pct.html
