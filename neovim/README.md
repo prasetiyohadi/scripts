@@ -4,7 +4,7 @@ This vim installation is using Neovim.
 
 ## Configuration
 
-Base configuration is generated using [vim-bootstrap.com](vim-bootstrap.com) and then patche files are created for each programming languages or frameworks. More customized configuration is created manually in `local_bundles.vim` and `local_init.vim`. To use the patch files, the key `let g:vim_bootstrap_langs` and `leg g:vim_bootstrap_frams` must be set to `""` first then the file patch is applied sequentially using command `patch -p 1 init.vim vim-bootstrap/<patch_name>.vim.patch`. To revert the patch, use the `*.revert` patch files, but it must be applied from the most recent patch first.
+Base configuration is generated using [vim-bootstrap.com](https://vim-bootstrap.com/) and then patche files are created for each programming languages or frameworks. More customized configuration is created manually in `local_bundles.vim` and `local_init.vim`. To use the patch files, the key `let g:vim_bootstrap_langs` and `leg g:vim_bootstrap_frams` must be set to `""` first then the file patch is applied sequentially using command `patch -p 1 init.vim vim-bootstrap/<patch_name>.vim.patch`. To revert the patch, use the `*.revert` patch files, but it must be applied from the most recent patch first.
 
 Use these steps to generate the patch files for specific programming language or framework. Firstly, generate vim configuration for the specific programming language or framework using vim-bootstrap.com and rename as `<programming language or framework>.vim`. Then, use these commands to generate the patch files.
 
