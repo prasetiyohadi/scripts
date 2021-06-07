@@ -1,6 +1,6 @@
 # Kube-prometheus-stack
 
-Kube-prometheus-stack [Helm Chart page][1]
+Kube-prometheus-stack [Helm Chart page](https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/README.md)
 
 ## Getting Started
 
@@ -35,5 +35,3 @@ Github issue: https://github.com/prometheus-community/helm-charts/issues/373
 ```
 helm install --namespace prometheus prometheus prometheus-community/kube-prometheus-stack --values arm/values.yml
 ```
-
-[1]:[https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/README.md]
