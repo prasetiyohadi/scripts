@@ -1,25 +1,62 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
-[[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=osx-x86_64
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux-x86_64
-export PROTOC3_VERSION=3.14.0
-export PROTOC3_PKG=protoc-${PROTOC3_VERSION}-${OS_TYPE}.zip
-export PROTOC3_URL=https://github.com/protocolbuffers/protobuf
-export PROTOC3_URL=${PROTOC3_URL}/releases/download
-export PROTOC3_URL=${PROTOC3_URL}/v${PROTOC3_VERSION}/${PROTOC3_PKG}
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-x86_64
+[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=$OS_TYPE_DARWIN
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=protoc
+APP_URL=https://github.com/protocolbuffers/protobuf/releases/download
+APP_VERSION=3.17.3
+APP_ROOT=/usr/local/include/google
+APP_SRC=$APP_BIN-$APP_VERSION-$OS_TYPE
+APP_PKG=$APP_SRC.zip
+APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
 
-# install protobuf compiler
-# https://github.com/protocolbuffers/protobuf
-cd "$(mktemp -d)"
-curl -fsSLO "${PROTOC3_URL}"
-unzip ${PROTOC3_PKG} -d protoc3
-sudo mv protoc3/bin/* /usr/local/bin/
-sudo mv protoc3/include/* /usr/local/include/
-sudo chown $USER /usr/local/bin/protoc
-sudo chown -R $USER /usr/local/include/google
+check_version() {
+    $APP_BIN --version
+}
 
-# test
-protoc --version
+install_linux() {
+    cd "$(mktemp -d)"
+    curl -fsSLO $APP_URL
+    unzip $APP_PKG -d $APP_SRC
+    sudo mv $APP_SRC/bin/* /usr/local/bin/
+    sudo mv $APP_SRC/include/* /usr/local/include/
+    sudo chown "$USER" /usr/local/bin/$APP_BIN
+    sudo chown -R "$USER" /usr/local/include/google
+}
+
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -d "$APP_ROOT" ]; then
+        check_version
+        read -p "$APP_ROOT already exists. Replace[yn]? " -n 1 -r
+        echo
+        if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+            sudo rm -fr $APP_ROOT
+            install_linux
+        else
+            echo "Installation cancelled."
+        fi
+    else
+        install_linux
+    fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

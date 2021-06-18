@@ -1,4 +1,9 @@
 *.swp
+.config
+.env
+.lock
 .python-version
+.cache/
+.env/
 docs/
 site/

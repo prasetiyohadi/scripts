@@ -1,5 +1,3 @@
 # Tflint
 
-A Pluggable Terraform Linter.
-
-Github repository https://github.com/terraform-linters/tflint/.
+[Tflint](https://github.com/terraform-linters/tflint/) is a pluggable Terraform linter.

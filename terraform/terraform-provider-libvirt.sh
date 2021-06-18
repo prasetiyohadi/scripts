@@ -1,34 +1,57 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
-export TF_LIBVIRT_VERSION=0.6.2
-export TF_LIBVIRT_URL=https://github.com/dmacvicar/terraform-provider-libvirt.git
+OS=${OSTYPE:-'linux-gnu'}
+OS_ID=""
+[ -f "/etc/os-release" ] && source /etc/os-release && OS_ID=$ID
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=terraform-provider-libvirt
+APP_VERSION=0.6.3
+APP_URL=https://github.com/dmacvicar/terraform-provider-libvirt.git
+HAS_GO="$(type "go" &> /dev/null && echo true || echo false)"
+HAS_GO="$(type "terraform" &> /dev/null && echo true || echo false)"
 
-# install terraform-provider-libvirt
-# https://github.com/dmacvicar/terraform-provider-libvirt
-if command -v go terraform 1>/dev/null 2>&1; then
-    if [ "${OS_TYPE}" == "linux-gnu" ]; then
-        if [ -f /etc/debian_version ]; then
-            sudo apt-get update
-            sudo apt-get install -y genisoimage libvirt-dev
-        fi
-        if [ -d $GH/../dmacvicar/terraform-provider-libvirt ]; then
-            cd $GH/../dmacvicar/terraform-provider-libvirt
-            git pull origin v${TF_LIBVIRT_VERSION}
-            git checkout v${TF_LIBVIRT_VERSION}
-        else
-            mkdir -p $GH/../dmacvicar
-            cd $GH/../dmacvicar
-            git clone -b v${TF_LIBVIRT_VERSION} ${TF_LIBVIRT_URL}
-            cd $GH/../dmacvicar/terraform-provider-libvirt
-        fi
-        export GO111MODULE=on
-        export GOFLAGS=-mod=vendor
-        go mod vendor
-        make install
+install() {
+    DIR=$(mktemp -d) && pushd "$DIR"
+    git clone -b v$APP_VERSION $APP_URL
+    cd $APP_BIN
+    make
+    make install
+    popd
+}
+
+install_linux() {
+    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
+        sudo apt-get update
+        sudo apt-get install -y genisoimage libvirt-dev
+        install
     fi
-else
-    echo "Install golang and terraform first!"
-fi
+}
+
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_NAME."
+    if [ ! "$HAS_GO" == "true" ]; then
+        echo "Install go first!"
+    elif [ ! "$HAS_TERRAFORM" == "true" ]; then
+        echo "Install terraform first!"
+    else
+        install_linux
+    fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

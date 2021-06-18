@@ -1,14 +1,41 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-# install conda
-# https://docs.conda.io/en/latest/miniconda.html
-CWD=$(dirname $0)
-curl -o /tmp/conda-installer.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-sha256sum -c $CWD/conda.sum
-bash /tmp/conda-installer.sh
-rm /tmp/conda-installer.sh
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_LINUX_AMD64=Linux-x86_64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=conda
+APP_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-$OS_TYPE.sh
 
-#conda info
-#conda config --set auto_activate_base false
-#conda env list
+clean() {
+    rm /tmp/$APP_BIN-installer.sh
+}
+
+download() {
+    curl -o /tmp/$APP_BIN-installer.sh $APP_URL
+}
+
+install() {
+    CWD=$(dirname "$0")
+    sha256sum -c "$CWD/$APP_BIN.sum"
+    bash /tmp/$APP_BIN-installer.sh
+}
+
+install_linux() {
+    download
+    install
+    clean
+}
+
+setup_linux() {
+    install_linux
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

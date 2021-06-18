@@ -1,47 +1,64 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export OS="${OSTYPE:-'linux-gnu'}"
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
-export OS_TYPE
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
-export CLOUDNUKE_VERSION=0.1.28
-export CLOUDNUKE_PKG=cloud-nuke_"$OS_TYPE"
-export CLOUDNUKE_URL="https://github.com/gruntwork-io/cloud-nuke/releases"
-export CLOUDNUKE_URL="$CLOUDNUKE_URL/download/v$CLOUDNUKE_VERSION/$CLOUDNUKE_PKG"
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux_amd64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=cloud-nuke
+APP_URL=https://github.com/gruntwork-io/cloud-nuke/releases
+APP_VERSION=0.1.30
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=${APP_BIN}_${OS_TYPE}
+APP_URL="$APP_URL/download/v$APP_VERSION/$APP_SRC"
 
-# install cloud-nuke
-# https://github.com/gruntwork-io/cloud-nuke
+check_version() {
+    $APP_BIN --version
+}
 
 download() {
-    wget -O "/tmp/$CLOUDNUKE_PKG" "$CLOUDNUKE_URL"
+    wget -O /tmp/$APP_SRC $APP_URL
 }
 
 install() {
     mkdir -p ~/bin
-    mv "/tmp/$CLOUDNUKE_PKG" ~/bin/cloud-nuke
-    chmod +x ~/bin/cloud-nuke
+    mv /tmp/$APP_SRC $APP_PATH
+    chmod +x $APP_PATH
 }
 
-main() {
+install_linux() {
     download
     install
 }
 
-if [[ "$OS_TYPE" == "linux_amd64" ]]; then
-    echo "This script will install cloud-nuke version $CLOUDNUKE_VERSION."
-    if [[ -s $HOME/bin/cloud-nuke ]]; then
-        read -p "$HOME/bin/cloud-nuke already exists. Replace[yn]? " -n 1 -r
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -s "$APP_PATH" ]; then
+        check_version
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            main
+            install_linux
         else
             echo "Installation cancelled."
         fi
     else
-        main
+        install_linux
     fi
-elif [[ "$OS_TYPE" == "darwin" ]]; then
-    echo "This script will install cloud-nuke version $CLOUDNUKE_VERSION using brew."
-    which brew > /dev/null && brew install cloud-nuke
-fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

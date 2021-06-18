@@ -1,13 +1,46 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=pipx
+HAS_PIP="$(type "pip" &> /dev/null && echo true || echo false)"
+HAS_PYENV="$(type "pyenv" &> /dev/null && echo true || echo false)"
 
-# install pipx
-# https://github.com/pipxproject/pipx
-if [ "${OS_TYPE}" == "linux-gnu" ]; then
-    python3 -m pip install --user pipx
-elif [ "${OS_TYPE}" == "darwin" ]; then
-    which brew > /dev/null && brew install pipx && pipx ensurepath
-fi
+install() {
+    pip install -U pip
+    pip install $APP_BIN
+}
+
+install_as_user() {
+    pip install -U --user pip
+    pip install --user $APP_BIN
+}
+
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN using pip."
+    if [ ! "$HAS_PIP" == "true" ]; then
+        echo "Install pip first!"
+    elif [ ! "$HAS_PYENV" == "true" ]; then
+        install_as_user
+    else
+        install
+    fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

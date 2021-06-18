@@ -32,11 +32,11 @@ kubectl apply -f $(sed "s/BASE_HOST/$BASE_HOST/g" deployment.yaml)
 
 ## Issue with ingress-nginx webhook
 
-Github issue: https://github.com/kubernetes/ingress-nginx/issues/5401
+[Github issue #5401](https://github.com/kubernetes/ingress-nginx/issues/5401)
 
-If there are errors in the ingress-nginx deployment, use the patch ingress-nginx-admission.patch.yaml for error related to validatingwebhookconfigurations.
+If there are errors in the ingress-nginx deployment, use the patch patch/ingress-nginx-admission.yaml for error related to validatingwebhookconfigurations.
 ```
-kubectl patch -n ingress-nginx validatingwebhookconfigurations ingress-nginx-admission --patch "$(cat ingress-nginx-admission.patch.yaml)"
+kubectl patch -n ingress-nginx validatingwebhookconfigurations ingress-nginx-admission --patch "$(cat patch/ingress-nginx-admission.yaml)"
 ```
 
 The other solution is to disable controller.admissionWebhooks.enabled on the helm installation.

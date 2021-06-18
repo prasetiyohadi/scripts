@@ -1,5 +1,3 @@
-# Icecream
+# IceCream
 
-Never use print() to debug again.
-
-Github repository https://github.com/gruns/icecream/.
+[IceCream](https://github.com/gruns/icecream/) - Never use print() to debug again.

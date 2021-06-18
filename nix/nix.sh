@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_LINUX_AMD64=linux-gnu
 
-if [ "${OS_TYPE}" == "linux-gnu" ]; then
+setup_linux() {
     # install nix for linux
     curl -L https://nixos.org/nix/install | sh
     # activate nix environment
-    . ${HOME}/.nix-profile/etc/profile.d/nix.sh
+    source ~/.nix-profile/etc/profile.d/nix.sh
     # verify installation
     nix-env --version
     # install lorri
@@ -20,4 +21,12 @@ if [ "${OS_TYPE}" == "linux-gnu" ]; then
     nix-env -if https://github.com/direnv/direnv/archive/master.tar.gz
     # install niv
     nix-env -iA nixpkgs.niv
-fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main
