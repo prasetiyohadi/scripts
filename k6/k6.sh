@@ -1,25 +1,60 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
+OS=${OSTYPE:-'linux-gnu'}
+OS_ID=""
+[ -f "/etc/os-release" ] && source /etc/os-release && OS_ID=$ID
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=k6
+APP_PATH=/usr/bin/$APP_BIN
 
-# install k6
-# https://k6.io/docs/getting-started/installation
-if [ "${OS_TYPE}" == "linux-gnu" ]; then
-    if [ -f /etc/debian_version ]; then
+check_version() {
+    $APP_BIN version
+}
+
+install_linux() {
+    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
         sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-          --recv-keys 379CE192D401AB61
-        echo "deb https://dl.bintray.com/loadimpact/deb stable main" | sudo \
-            tee -a /etc/apt/sources.list.d/k6.list
+            --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb https://dl.k6.io/deb stable main" | sudo \
+            tee /etc/apt/sources.list.d/$APP_BIN.list
         sudo apt-get update
-        sudo apt-get install --assume-yes k6
-    elif [ -f /etc/redhat-release ]; then
-        wget https://bintray.com/loadimpact/rpm/rpm -O \
-            bintray-loadimpact-rpm.repo
-        sudo dnf config-manager --add-repo bintray-loadimpact-rpm.repo
-        sudo dnf install --assumeyes k6
+        sudo apt-get install --assume-yes $APP_BIN
+    elif [ "$OS_ID" == "centos" ] || [ "$OS_ID" == "fedora" ]; then
+        sudo dnf install https://dl.k6.io/rpm/repo.rpm
+        sudo dnf install --assumeyes $APP_BIN
     fi
-elif [ "${OS_TYPE}" == "darwin" ]; then
-    which brew > /dev/null && brew install k6
-fi
+}
+
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN."
+    if [ -s "$APP_PATH" ]; then
+        check_version
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
+        echo
+        if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+            install_linux
+        else
+            echo "Installation cancelled."
+        fi
+    else
+        install_linux
+    fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

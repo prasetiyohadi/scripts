@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-which helm > /dev/null && export HELM_EXISTS=0
+HAS_HELM=$(type "helm" &> /dev/null && echo true || echo false)
 
-if [[ $HELM_EXISTS ]]; then
-    echo "This script will install helm plugins."
-    helm plugin install https://github.com/databus23/helm-diff
-    helm plugin install https://github.com/aslafy-z/helm-git
-    helm plugin install https://github.com/jkroepke/helm-secrets
-else
-    echo "Helm is not found in PATH."
-fi
+main() {
+    if [ ! "$HAS_HELM" == "true" ]; then
+        echo "Helm is not found in PATH."
+    else
+        echo "This script will install helm plugins."
+        # TODO change this to loop
+        helm plugin install "https://github.com/databus23/helm-diff"
+        helm plugin install "https://github.com/aslafy-z/helm-git"
+        helm plugin install "https://github.com/jkroepke/helm-secrets"
+    fi
+}
+
+main

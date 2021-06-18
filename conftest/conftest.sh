@@ -1,55 +1,71 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export OS="${OSTYPE:-'linux-gnu'}"
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
-export OS_TYPE
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=Linux_x86_64
-export CONFTEST_VERSION=0.23.0
-export CONFTEST_SRC=conftest_"$CONFTEST_VERSION"_"$OS_TYPE"
-export CONFTEST_PKG="$CONFTEST_SRC.tar.gz"
-export CONFTEST_URL="https://github.com/open-policy-agent/conftest/releases"
-export CONFTEST_URL="$CONFTEST_URL/download/v$CONFTEST_VERSION/$CONFTEST_PKG"
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=Linux_x86_64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=conftest
+APP_URL=https://github.com/open-policy-agent/conftest/releases
+APP_VERSION=0.25.0
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
+APP_PKG=$APP_SRC.tar.gz
+APP_URL=$APP_URL/download/v$APP_VERSION/$APP_PKG
 
-# install conftest
-# https://www.conftest.dev/install/
+check_version() {
+    $APP_BIN --version
+}
 
 clean() {
-    rm -r "/tmp/$CONFTEST_PKG" "/tmp/$CONFTEST_SRC"
+    rm -r /tmp/$APP_PKG /tmp/$APP_SRC
 }
 
 download() {
-    wget -O "/tmp/$CONFTEST_PKG" "$CONFTEST_URL"
-    mkdir -p "/tmp/$CONFTEST_SRC"
-    tar -xf "/tmp/$CONFTEST_PKG" -C "/tmp/$CONFTEST_SRC"
+    wget -O /tmp/$APP_PKG $APP_URL
+    mkdir -p /tmp/$APP_SRC
+    tar -xf /tmp/$APP_PKG -C /tmp/$APP_SRC
 }
 
 install() {
     mkdir -p ~/bin
-    mv "/tmp/$CONFTEST_SRC/conftest" ~/bin
+    mv /tmp/$APP_SRC/$APP_BIN ~/bin
 }
 
-main() {
+install_linux() {
     download
     install
     clean
 }
 
-if [[ "$OS_TYPE" == "Linux_x86_64" ]]; then
-    echo "This script will install conftest version $CONFTEST_VERSION."
-    if [[ -s "$HOME/bin/conftest" ]]; then
-        read -p "$HOME/bin/conftest already exists. Replace[yn]? " -n 1 -r
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -s "$APP_PATH" ]; then
+        check_version
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            main
+            install_linux
         else
             echo "Installation cancelled."
         fi
     else
-        main
+        install_linux
     fi
-elif [[ "$OS_TYPE" == "darwin" ]]; then
-    echo "This script will install conftest version $CONFTEST_VERSION using brew."
-    which brew > /dev/null && brew tap instrumenta/instrumenta
-    brew install conftest
-fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_LINUX_AMD64=linux-gnu
 
 install() {

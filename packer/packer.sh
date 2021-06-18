@@ -1,27 +1,73 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-export OS=${OSTYPE:-'linux-gnu'}
-export OS_TYPE=`echo ${OS} | tr -d "[:digit:]"`
-[[ "$OS_TYPE" == "darwin" ]] && export OS_TYPE=darwin_amd64
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_amd64
-[[ "$OS_TYPE" == "linux-gnueabihf" ]] && export OS_TYPE=linux_arm
-export PACKER_VERSION=1.6.6
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin_amd64
+OS_TYPE_LINUX_AMD64=linux_amd64
+OS_TYPE_LINUX_ARM=linux_arm
+[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=$OS_TYPE_DARWIN
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+[ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
+APP_BIN=packer
+APP_URL=https://releases.hashicorp.com/packer
+APP_VERSION=1.7.2
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
+APP_PKG=$APP_SRC.zip
+APP_URL=$APP_URL/$APP_VERSION/$APP_PKG
 
-# check packer version
-if [ -f "`which packer`" ]; then
-  export NEW_VERSION=`packer version | grep ^is | awk '{print $2}' | sed 's/\.$//g'`
-  if [ ! "$NEW_VERSION" == "" ]; then
-    echo "New version available: $PACKER_VERSION"
-    export PACKER_VERSION=$NEW_VERSION
-  fi
-fi
+check_version() {
+    $APP_BIN version
+}
 
-export PACKER_PKG=packer_${PACKER_VERSION}_${OS_TYPE}.zip
-export PACKER_URL=https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_${OS_TYPE}.zip
+clean() {
+    rm -f /tmp/$APP_PKG
+}
 
-# install packer
-wget -O /tmp/${PACKER_PKG} ${PACKER_URL}
-mkdir -p ~/bin
-unzip /tmp/${PACKER_PKG} -d ~/bin
-rm -f /tmp/${PACKER_PKG}
+download() {
+    wget -O /tmp/$APP_PKG $APP_URL
+}
+
+install() {
+    mkdir -p ~/bin
+    unzip /tmp/$APP_PKG -d ~/bin
+}
+
+install_linux() {
+    download
+    install
+    clean
+}
+
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -s "$APP_PATH" ]; then
+        check_version
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
+        echo
+        if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+            install_linux
+        else
+            echo "Installation cancelled."
+        fi
+    else
+        install_linux
+    fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ] \
+        || [ "$OS_TYPE" == "$OS_TYPE_LINUX_ARM" ]; then
+        setup_linux
+    fi
+}
+
+main

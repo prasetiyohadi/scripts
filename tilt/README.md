@@ -1,8 +1,8 @@
 # Tilt
 
-A multi-service dev environment for teams on Kubernetes.
+[Tilt](https://tilt.dev/) is a multi-service dev environment for teams on Kubernetes.
 
-Github repository https://github.com/tilt-dev/tilt/.
+[Github repository](https://github.com/tilt-dev/tilt/)
 
 ## Getting started
 

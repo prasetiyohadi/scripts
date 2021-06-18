@@ -1,7 +1,5 @@
 # Kube-score
 
-Kubernetes object analysis with recommendations for improved reliability and security.
+[Kube-score](https://kube-score.com/) is a Kubernetes object analysis with recommendations for improved reliability and security.
 
-Github repository https://github.com/zegl/kube-score/.
-
-Website https://kube-score.com/.
+[Github repository](https://github.com/zegl/kube-score/)

@@ -1,30 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export OS="${OSTYPE:-'linux-gnu'}"
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
-export OS_TYPE
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=ripgrep
+HAS_CARGO="$(type "cargo" &> /dev/null && echo true || echo false)"
 
-# install ripgrep
-# https://github.com/BurntSushi/ripgrep
 install() {
-    if [ -f /etc/debian_version ]; then
-        sudo apt-get update
-        sudo apt-get install --assume-yes ripgrep
-    elif [ -f /etc/redhat-release ]; then
-        sudo dnf install --assumeyes epel-release
-        sudo dnf install --assumeyes ripgrep
+    cargo install $APP_BIN
+}
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN using cargo."
+    if [ ! "$HAS_CARGO" == "true" ]; then
+        echo "Install rustup/cargo first!"
+    else
+        install
     fi
 }
 
 main() {
-    install
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
 }
 
-if [[ "$OS_TYPE" == "linux-gnu" ]]; then
-    echo "This script will install ripgrep."
-    main
-elif [[ "$OS_TYPE" == "darwin" ]]; then
-    echo "This script will install ripgrep."
-    which brew > /dev/null && brew install ripgrep
-fi
+main

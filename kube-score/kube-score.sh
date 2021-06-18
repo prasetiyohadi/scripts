@@ -1,7 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# install kube-score
-# https://github.com/zegl/kube-score
-echo "This script will install kube-score."
-which kubectl-krew > /dev/null && kubectl-krew install score
+# Application details
+APP_NAME=score
+HAS_KREW="$(type "kubectl-krew" &> /dev/null && echo true || echo false)"
+
+install() {
+    kubectl-krew install score
+}
+
+main() {
+    echo "This script will install $APP_NAME."
+    if [ ! "$HAS_KREW" == "true" ]; then
+        echo "Install krew first!"
+    else
+        install
+    fi
+}
+
+main

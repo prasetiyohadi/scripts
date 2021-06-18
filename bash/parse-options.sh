@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Example of how to parse short/long options with 'getopt'
 #
 
-OPTS=`getopt -o vhns: --long verbose,dry-run,help,stack-size: -n 'parse-options' -- "$@"`
-
-if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+if ! OPTS=$(getopt -o vhns: --long verbose,dry-run,help,stack-size: -n 'parse-options' -- "$@"); then
+    echo "Failed parsing options." >&2
+    exit 1
+fi
 
 echo "$OPTS"
 eval set -- "$OPTS"
@@ -29,4 +30,4 @@ done
 echo VERBOSE=$VERBOSE
 echo HELP=$HELP
 echo DRY_RUN=$DRY_RUN
-echo STACK_SIZE=$STACK_SIZE
+echo STACK_SIZE="$STACK_SIZE"

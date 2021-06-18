@@ -1,11 +1,9 @@
 # Krew
 
-Find and install kubectl plugins.
+[krew](https://krew.sigs.k8s.io/) is a tool to find and install kubectl plugins.
 
-Github repository https://github.com/kubernetes-sigs/krew/.
-
-Website https://krew.sigs.k8s.io/.
+[Github repository](https://github.com/kubernetes-sigs/krew/)
 
 ## Getting started
 
-Install krew https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+[Installation](https://krew.sigs.k8s.io/docs/user-guide/setup/install/)

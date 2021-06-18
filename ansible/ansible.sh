@@ -1,14 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# install ansible (requires pipenv and pyenv)
-# https://github.com/ansible/ansible
-if command -v pipenv pyenv 1>/dev/null 2>&1; then
-    CWD=$(dirname "$0")
-    cd "$CWD"
-    pipenv run pip install -U setuptools
-    pipenv install
-    pipenv shell
-else
-    echo "Install pipenv and pyenv first!"
-fi
+# Application details
+APP_BIN=ansible
+HAS_PIP="$(type "pip" &> /dev/null && echo true || echo false)"
+HAS_PYENV="$(type "pyenv" &> /dev/null && echo true || echo false)"
+
+install() {
+    pip install -U pip wheel
+    pip install $APP_BIN paramiko
+}
+
+install_as_user() {
+    pip install -U --user pip wheel
+    pip install --user $APP_BIN paramiko
+}
+
+main() {
+    echo "This script will install $APP_BIN."
+    if [ ! "$HAS_PIP" == "true" ]; then
+        echo "Install pip first!"
+    elif [ ! "$HAS_PYENV" == "true" ]; then
+        install_as_user
+    else
+        install
+    fi
+}
+
+main

@@ -1,66 +1,71 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export OS="${OSTYPE:-'linux-gnu'}"
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
-export OS_TYPE
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_64-bit
-export VULTR_CLI_VERSION=2.4.1
-export VULTR_CLI_SRC=vultr-cli_"$VULTR_CLI_VERSION"_"$OS_TYPE"
-export VULTR_CLI_PKG="$VULTR_CLI_SRC.tar.gz"
-export VULTR_CLI_URL="https://github.com/vultr/vultr-cli/releases"
-export VULTR_CLI_URL="$VULTR_CLI_URL/download/v$VULTR_CLI_VERSION/$VULTR_CLI_PKG"
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux_64-bit
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=vultr-cli
+APP_URL=https://github.com/vultr/vultr-cli/releases/download
+APP_VERSION=2.5.2
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
+APP_PKG=$APP_SRC.tar.gz
+APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
 
-# install vultr-cli
-# https://www.vultr.com/news/How-to-Easily-Manage-Instances-with-Vultr-CLI/
+check_version() {
+    VULTR_API_KEY="check" $APP_BIN version
+}
 
 clean() {
-    rm -r "/tmp/$VULTR_CLI_PKG" "/tmp/$VULTR_CLI_SRC"
+    rm -r /tmp/$APP_PKG /tmp/$APP_SRC
 }
 
 download() {
-    wget -O "/tmp/$VULTR_CLI_PKG" "$VULTR_CLI_URL"
-    mkdir -p "/tmp/$VULTR_CLI_SRC"
-    tar -xf "/tmp/$VULTR_CLI_PKG" -C "/tmp/$VULTR_CLI_SRC"
+    wget -O /tmp/$APP_PKG $APP_URL
+    mkdir -p /tmp/$APP_SRC
+    tar -xf /tmp/$APP_PKG -C /tmp/$APP_SRC
 }
 
 install() {
     mkdir -p ~/bin
-    mv "/tmp/$VULTR_CLI_SRC/vultr-cli" ~/bin
+    mv /tmp/$APP_SRC/$APP_BIN ~/bin
 }
 
-setup() {
+install_linux() {
     download
     install
     clean
 }
 
-main_linux() {
-    echo "This script will install vultr-cli version $VULTR_CLI_VERSION."
-    if [[ -s "$HOME/bin/vultr-cli" ]]; then
-        read -p "$HOME/bin/vultr-cli already exists. Replace[yn]? " -n 1 -r
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew tap vultr/$APP_BIN
+    brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -s "$APP_PATH" ]; then
+        check_version
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            setup
+            install_linux
         else
             echo "Installation cancelled."
         fi
     else
-        setup
+        install_linux
     fi
 }
 
-main_darwin() {
-    echo "This script will install vultr-cli version $VULTR_CLI_VERSION using brew."
-    which brew > /dev/null && brew tap vultr/vultr-cli
-    brew install vultr-cli
-}
-
 main() {
-    if [[ "$OS_TYPE" == "linux_64-bit" ]]; then
-        main_linux
-    elif [[ "$OS_TYPE" == "darwin" ]]; then
-        main_darwin
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
     fi
 }
 

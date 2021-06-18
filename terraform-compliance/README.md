@@ -1,7 +1,5 @@
 # Terraform-compliance
 
-A lightweight, security focused, BDD test framework against terraform.
+[Terraform-compliance](https://terraform-compliance.com/) is a lightweight, security focused, BDD test framework against terraform.
 
-Github repository https://github.com/terraform-compliance/cli/.
-
-Website https://terraform-compliance.com/.
+[Github repository](https://github.com/terraform-compliance/cli/)

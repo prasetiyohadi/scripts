@@ -1,5 +1,3 @@
 # Helmfile
 
-Deploy Kubernetes Helm Charts.
-
-Github repository https://github.com/roboll/helmfile/.
+[Helmfile](https://github.com/roboll/helmfile/) is a declarative spec for deploying helm charts. Deploy Kubernetes Helm Charts using Helmfile.

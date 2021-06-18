@@ -7,59 +7,64 @@ OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux-amd64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE="$OS_TYPE_LINUX_AMD64"
 APP_BIN=doctl
-APP_VERSION=1.59.0
-APP_SRC="$APP_BIN-$APP_VERSION-$OS_TYPE"
-APP_PKG="$APP_SRC.tar.gz"
-APP_URL="https://github.com/digitalocean/doctl/releases"
-APP_URL="$APP_URL/download/v$APP_VERSION/$APP_PKG"
+APP_URL=https://github.com/digitalocean/doctl/releases/download
+APP_VERSION=1.61.0
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=$APP_BIN-$APP_VERSION-$OS_TYPE
+APP_PKG=$APP_SRC.tar.gz
+APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
+
+check_version() {
+    $APP_BIN version
+}
 
 clean() {
-    rm -r "/tmp/$APP_PKG" "/tmp/$APP_SRC"
+    rm -r /tmp/$APP_PKG /tmp/$APP_SRC
 }
 
 download() {
-    wget -O "/tmp/$APP_PKG" "$APP_URL"
-    mkdir -p "/tmp/$APP_SRC"
-    tar -xf "/tmp/$APP_PKG" -C "/tmp/$APP_SRC"
+    wget -O /tmp/$APP_PKG $APP_URL
+    mkdir -p /tmp/$APP_SRC
+    tar -xf /tmp/$APP_PKG -C /tmp/$APP_SRC
 }
 
 install() {
     mkdir -p ~/bin
-    mv "/tmp/$APP_SRC/$APP_BIN" ~/bin
+    mv /tmp/$APP_SRC/$APP_BIN ~/bin
 }
 
-setup() {
+install_linux() {
     download
     install
     clean
 }
 
-main_linux() {
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
     echo "This script will install $APP_BIN version $APP_VERSION."
-    if [ -s "$HOME/bin/$APP_BIN" ]; then
-        read -p "$HOME/bin/$APP_BIN already exists. Replace[yn]? " -n 1 -r
+    if [ -s "$APP_PATH" ]; then
+        check_version
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            setup
+            install_linux
         else
             echo "Installation cancelled."
         fi
     else
-        setup
+        install_linux
     fi
 }
 
-main_darwin() {
-    APP_VERSION=latest
-    echo "This script will install $APP_BIN version $APP_VERSION using brew."
-    which brew > /dev/null && brew install "$APP_BIN"
-}
-
 main() {
-    if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
-        main_linux
-    elif [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
-        main_darwin
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
     fi
 }
 

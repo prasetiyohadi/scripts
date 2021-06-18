@@ -1,7 +1,5 @@
 # Shellcheck
 
-ShellCheck, a static analysis tool for shell scripts.
+[ShellCheck](https://www.shellcheck.net/), a static analysis tool for shell scripts.
 
-Github repository https://github.com/koalaman/shellcheck/.
-
-Website https://www.shellcheck.net/.
+[Github repository](https://github.com/koalaman/shellcheck/)

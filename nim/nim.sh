@@ -1,50 +1,75 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export OS="${OSTYPE:-'linux-gnu'}"
-OS_TYPE="$(echo "$OS" | tr -d ".[:digit:]")"
-export OS_TYPE
-[[ "$OS_TYPE" == "linux-gnu" ]] && export OS_TYPE=linux_x64
-export NIM_VERSION=1.4.4
-export NIM_INSTALL_PATH=~/.local
-export NIM_ROOT="$NIM_INSTALL_PATH/nim"
-export NIM_SRC=nim-"$NIM_VERSION-$OS_TYPE"
-export NIM_PKG="$NIM_SRC.tar.xz"
-export NIM_URL="https://nim-lang.org/download/$NIM_PKG"
+OS=${OSTYPE:-'linux-gnu'}
+OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux_x64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=nim
+APP_VERSION=1.4.8
+APP_ROOT=~/.local/$APP_BIN
+APP_SRC=$APP_BIN-$APP_VERSION-$OS_TYPE
+APP_PKG=$APP_SRC.tar.xz
+APP_URL=https://nim-lang.org/download/$APP_PKG
 
-# install nim
-# https://nim-lang.org/install_unix.html
+check_version() {
+    $APP_BIN --version
+}
 
 clean() {
-    rm "/tmp/$NIM_PKG" "/tmp/$NIM_PKG.sha256" /tmp/nim.sum
+    rm /tmp/$APP_PKG /tmp/$APP_PKG.sha256 /tmp/$APP_BIN.sum
 }
 
 download() {
-    wget -O "/tmp/$NIM_PKG" "$NIM_URL"
-    wget -O "/tmp/$NIM_PKG".sha256 "$NIM_URL".sha256
-    echo "$(awk '{print $1}' "/tmp/$NIM_PKG.sha256")" "/tmp/$NIM_PKG" > /tmp/nim.sum
-    sha256sum -c /tmp/nim.sum
-    tar -xf "/tmp/$NIM_PKG" -C /tmp
-    mkdir -p "$NIM_INSTALL_PATH"
+    wget -O /tmp/$APP_PKG $APP_URL
+    wget -O /tmp/$APP_PKG.sha256 $APP_URL.sha256
 }
 
-if [[ "$OS_TYPE" == "linux_x64" ]]; then
-    echo "This script will install Nim language version $NIM_VERSION to $NIM_ROOT."
-    if [[ -d "$NIM_ROOT" ]]; then
-        read -p "$NIM_ROOT already exists. Replace[yn]? " -n 1 -r
+install() {
+    echo "$(awk '{print $1}' /tmp/$APP_PKG.sha256) /tmp/$APP_PKG" \
+        > /tmp/$APP_BIN.sum
+    sha256sum -c /tmp/$APP_BIN.sum
+    tar -xf /tmp/$APP_PKG -C /tmp
+    mkdir -p ~/.local
+    mv /tmp/$APP_BIN-$APP_VERSION $APP_ROOT
+    export PATH=$PATH:$APP_ROOT/bin:$HOME/.nimble/bin
+}
+
+install_linux() {
+    download
+    install
+    clean
+}
+
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install $APP_BIN
+}
+
+setup_linux() {
+    echo "This script will install $APP_BIN version $APP_VERSION."
+    if [ -d "$APP_ROOT" ]; then
+        check_version
+        read -p "$APP_ROOT already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            download
-            rm -r "$NIM_ROOT"
-            mv "/tmp/nim-$NIM_VERSION" "$NIM_ROOT"
-            clean
+            rm -fr $APP_ROOT
+            install_linux
+        else
+            echo "Installation cancelled."
         fi
     else
-        download
-        mv "/tmp/nim-$NIM_VERSION" "$NIM_ROOT"
-        clean
+        install_linux
     fi
-elif [[ "$OS_TYPE" == "darwin" ]]; then
-    echo "This script will install Nim language version $NIM_VERSION using brew."
-    which brew > /dev/null && brew install nim
-fi
+}
+
+main() {
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+        setup_linux
+    fi
+}
+
+main

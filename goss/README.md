@@ -1,7 +1,5 @@
 # Goss
 
-Quick and Easy server testing/validation.
+[Goos](https://goss.rocks/) is a quick and easy server testing/validation.
 
-Github repository https://github.com/aelsabbahy/goss/.
-
-Website https://goss.rocks/.
+[Github repository](https://github.com/aelsabbahy/goss/)
