@@ -118,7 +118,9 @@ autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 """"""""""""""""""""""""""""""
 
 let g:tex_flavor='latexmk'
-let g:vimtex_view_general_viewer = 'okular'
+let g:vimtex_compiler_progname = 'nvr'
+let g:vimtex_view_enabled = 0
+let g:vimtex_view_general_viewer = 'zathura'
 let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
 let g:vimtex_quickfix_mode=0
@@ -169,6 +171,9 @@ set background=dark " Setting dark mode
 """"""""""""""""""""""""""""""
 " RNVIMR
 """"""""""""""""""""""""""""""
+
+" Set python environment
+let g:rnvimr_ranger_cmd='~/.config/nvim/env/bin/ranger'
 
 " Make Ranger replace Netrw and be the file explorer
 let g:rnvimr_ex_enable = 1
