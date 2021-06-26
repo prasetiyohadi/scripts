@@ -47,14 +47,16 @@ The current configuration using the base configuration with these patches applie
 4. python
 5. ruby
 6. rust
+7. typescript
+8. vuejs
 
 The current bootstrap keys
 
 ```
-let g:vim_bootstrap_langs = "go,html,javascript,python,ruby,rust"
+let g:vim_bootstrap_langs = "go,html,javascript,python,ruby,rust,typescript"
 let g:vim_bootstrap_editor = "nvim"                             " nvim or vim
 let g:vim_bootstrap_theme = "dracula"
-let g:vim_bootstrap_frams = ""
+let g:vim_bootstrap_frams = "vuejs"
 ```
 
 ## Configuration for Debian

@@ -10,10 +10,10 @@ else
   let curl_exists=expand('curl')
 endif
 
-let g:vim_bootstrap_langs = "go,html,javascript,python,ruby,rust"
+let g:vim_bootstrap_langs = "go,html,javascript,python,ruby,rust,typescript"
 let g:vim_bootstrap_editor = "nvim"				" nvim or vim
 let g:vim_bootstrap_theme = "dracula"
-let g:vim_bootstrap_frams = ""
+let g:vim_bootstrap_frams = "vuejs"
 
 if !filereadable(vimplug_exists)
   if !executable(curl_exists)
@@ -30,6 +30,12 @@ endif
 
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
+
+" vuejs
+Plug 'posva/vim-vue'
+Plug 'leafOfTree/vim-vue-plugin'
+
+
 
 "*****************************************************************************
 "" Plug install packages
@@ -119,6 +125,11 @@ Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 
+" typescript
+Plug 'leafgarland/typescript-vim'
+Plug 'HerringtonDarkholme/yats.vim'
+
+
 "*****************************************************************************
 "" Custom bundles
 "*****************************************************************************
@@ -126,6 +137,13 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " go
 "" Go Lang Bundle
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
+
+
+" vuejs
+" vim vue
+let g:vue_disable_pre_processors=1
+" vim vue plugin
+let g:vim_vue_plugin_load_full_syntax = 1
 
 
 "*****************************************************************************
@@ -293,6 +311,10 @@ let Grep_Skip_Dirs = '.git node_modules'
 
 " terminal emulation
 nnoremap <silent> <leader>sh :terminal<CR>
+
+" typescript
+let g:yats_host_keyword = 1
+
 
 
 "*****************************************************************************

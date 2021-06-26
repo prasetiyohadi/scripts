@@ -90,3 +90,6 @@ Plug 'preservim/vim-pencil'
 
 " Vimwiki
 Plug 'vimwiki/vimwiki'
+
+" JSX and TSX syntax highlighting
+Plug 'maxmellon/vim-jsx-pretty'

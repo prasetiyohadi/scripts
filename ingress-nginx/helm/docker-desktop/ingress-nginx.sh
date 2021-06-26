@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Application details
-APP_NAME=kube-prometheus-stack
-APP_NAMESPACE=prometheus
-APP_RELEASE=prometheus
-APP_REPO=prometheus-community
-APP_REPO_URL=https://prometheus-community.github.io/helm-charts
+APP_NAME=ingress-nginx
+APP_NAMESPACE=ingress-nginx
+APP_RELEASE=ingress-nginx
+APP_REPO=ingress-nginx
+APP_REPO_URL=https://kubernetes.github.io/ingress-nginx
 HAS_HELM="$(type "helm" &> /dev/null && echo true || echo false)"
 HELM_CMD="helm --repository-cache .cache --repository-config .config"
 HELM_SUBCMD=install
@@ -27,7 +27,7 @@ install() {
     pushd "$(dirname "$0")" &> /dev/null
     add_repo
     # Installation command for the application
-    $HELM_CMD $HELM_SUBCMD -n $APP_NAMESPACE $APP_RELEASE $APP_REPO/$APP_NAME -f values.yml
+    $HELM_CMD $HELM_SUBCMD -n $APP_NAMESPACE $APP_RELEASE $APP_REPO/$APP_NAME
     popd &> /dev/null
 }
 
