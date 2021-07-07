@@ -11,7 +11,7 @@ OS_TYPE_LINUX_ARM=linux_arm
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
 APP_BIN=packer
 APP_URL=https://releases.hashicorp.com/packer
-APP_VERSION=1.7.2
+APP_VERSION=1.7.3
 APP_PATH=~/bin/$APP_BIN
 APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
 APP_PKG=$APP_SRC.zip
