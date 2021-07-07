@@ -4,38 +4,21 @@ set -euo pipefail
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
-OS_TYPE_LINUX_AMD64=linux_amd64
-OS_TYPE_LINUX_ARM=linux_arm
-[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-[ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
-APP_BIN=terraform
-APP_VERSION=1.0.1
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=rust-analyzer
+APP_URL=https://github.com/rust-analyzer/rust-analyzer/releases/latest/download
 APP_PATH=~/bin/$APP_BIN
-APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
-APP_PKG=$APP_SRC.zip
-APP_URL=https://releases.hashicorp.com/$APP_BIN/$APP_VERSION/$APP_PKG
+APP_SRC=rust-analyzer-x86_64-unknown-linux-gnu
+APP_PKG=$APP_SRC.gz
+APP_URL=$APP_URL/$APP_PKG
 
 check_version() {
-    $APP_BIN version
-}
-
-clean() {
-    rm -f /tmp/$APP_PKG
-}
-
-download() {
-    wget -O /tmp/$APP_PKG $APP_URL
-}
-
-install() {
-    mkdir -p ~/bin
-    unzip /tmp/$APP_PKG -d ~/bin
+    $APP_BIN --version
 }
 
 install_linux() {
-    download
-    install
-    clean
+    curl -L $APP_URL | gunzip -c - > $APP_PATH
+    chmod +x $APP_PATH
 }
 
 setup_darwin() {
@@ -44,7 +27,7 @@ setup_darwin() {
 }
 
 setup_linux() {
-    echo "This script will install $APP_BIN version $APP_VERSION."
+    echo "This script will install $APP_BIN."
     if [ -s "$APP_PATH" ]; then
         check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
@@ -62,8 +45,7 @@ setup_linux() {
 main() {
     if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
         setup_darwin
-    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ] || \
-        [ "$OS_TYPE" == "$OS_TYPE_LINUX_ARM" ]; then
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
         setup_linux
     fi
 }

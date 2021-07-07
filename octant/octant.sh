@@ -3,35 +3,34 @@ set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
-OS_TYPE_DARWIN=darwin_amd64
-OS_TYPE_LINUX_AMD64=linux_amd64
-OS_TYPE_LINUX_ARM=linux_arm
-[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=$OS_TYPE_DARWIN
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=Linux-64bit
+OS_TYPE_LINUX_ARM=Linux-arm
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
-APP_BIN=packer
-APP_URL=https://releases.hashicorp.com/packer
-APP_VERSION=1.7.3
+APP_BIN=octant
+APP_URL=https://github.com/vmware-tanzu/octant/releases/download
+APP_VERSION=0.21.0
 APP_PATH=~/bin/$APP_BIN
 APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
-APP_PKG=$APP_SRC.zip
-APP_URL=$APP_URL/$APP_VERSION/$APP_PKG
+APP_PKG=$APP_SRC.tar.gz
+APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
 
 check_version() {
     $APP_BIN version
 }
 
 clean() {
-    rm -f /tmp/$APP_PKG
+    rm -r /tmp/$APP_SRC
 }
 
 download() {
-    wget -O /tmp/$APP_PKG $APP_URL
+    curl -L $APP_URL | tar -zx -C /tmp
 }
 
 install() {
     mkdir -p ~/bin
-    unzip /tmp/$APP_PKG -d ~/bin
+    mv /tmp/$APP_SRC/$APP_BIN ~/bin
 }
 
 install_linux() {
@@ -41,7 +40,7 @@ install_linux() {
 }
 
 setup_darwin() {
-    echo "This script will install $APP_BIN using brew."
+    echo "This script will install $APP_BIN version $APP_VERSION using brew."
     command -v brew > /dev/null && brew install $APP_BIN
 }
 
@@ -64,8 +63,8 @@ setup_linux() {
 main() {
     if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
         setup_darwin
-    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ] \
-        || [ "$OS_TYPE" == "$OS_TYPE_LINUX_ARM" ]; then
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ] || \
+        [ "$OS_TYPE" == "$OS_TYPE_LINUX_ARM" ]; then
         setup_linux
     fi
 }
