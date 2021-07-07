@@ -9,7 +9,7 @@ OS_TYPE_LINUX_ARM=linux_arm
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
 APP_BIN=terraform
-APP_VERSION=1.0.0
+APP_VERSION=1.0.1
 APP_PATH=~/bin/$APP_BIN
 APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
 APP_PKG=$APP_SRC.zip
