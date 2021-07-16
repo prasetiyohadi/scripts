@@ -7,13 +7,13 @@
 Plug 'ryanoasis/vim-devicons'
 
 " asynchronous completion
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+"if has('nvim')
+"  Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+"else
+"  Plug 'Shougo/deoplete.nvim'
+"  Plug 'roxma/nvim-yarp'
+"  Plug 'roxma/vim-hug-neovim-rpc'
+"endif
 
 " completion for golang
 "Plug 'deoplete-plugins/deoplete-go', {'do': 'make'}
@@ -46,7 +46,7 @@ Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 Plug 'easymotion/vim-easymotion'
 
 " Emoji support
-Plug 'fszymanski/deoplete-emoji'
+"Plug 'fszymanski/deoplete-emoji'
 
 " Easy commenting for Vim
 Plug 'preservim/nerdcommenter'
@@ -93,3 +93,13 @@ Plug 'vimwiki/vimwiki'
 
 " JSX and TSX syntax highlighting
 Plug 'maxmellon/vim-jsx-pretty'
+
+" Replace deoplete with CoC
+" Use release branch (recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Vim syntax highlighting plugin for JSON with C-style line (//) and block (/* */) comments.
+Plug 'kevinoid/vim-jsonc'
+
+" Vim plugin for Rego OPA
+Plug 'tsandall/vim-rego'

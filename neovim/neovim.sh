@@ -23,7 +23,7 @@ configure() {
     # setup python virtual environment
     python3 -m venv ~/.config/nvim/env
     ~/.config/nvim/env/bin/pip install -U pip
-    ~/.config/nvim/env/bin/pip install neovim-remote pynvim ranger-fm ueberzug
+    ~/.config/nvim/env/bin/pip install neovim-remote pynvim ranger-fm
 
     # install plugins
     nvim +PlugInstall +qall
