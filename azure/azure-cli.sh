@@ -21,9 +21,8 @@ install_linux() {
         curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
         echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/$APP_BIN.list
         sudo apt-get update
-        sudo apt-get install $APP_BIN
+        sudo apt-get install -y $APP_BIN
     elif [ "$OS_ID" == "centos" ] || [ "$OS_ID" == "fedora" ]; then
-        # 
         sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
         echo -e "[azure-cli]
 name=Azure CLI
@@ -31,7 +30,7 @@ baseurl=https://packages.microsoft.com/yumrepos/azure-cli
 enabled=1
 gpgcheck=1
 gpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/$APP_BIN.repo
-        sudo yum install $APP_BIN
+        sudo dnf install -y $APP_BIN
     fi
 }
 
@@ -42,8 +41,8 @@ setup_darwin() {
 
 setup_linux() {
     echo "This script will install $APP_BIN."
-    check_version
     if [ -s "$APP_PATH" ]; then
+        check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then

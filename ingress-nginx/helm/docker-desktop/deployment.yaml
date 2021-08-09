@@ -13,10 +13,10 @@ spec:
         app: hello-one
     spec:
       containers:
-      - name: hello-ingress
-        image: nginxdemos/hello
-        ports:
-        - containerPort: 80
+        - name: hello-ingress
+          image: nginxdemos/hello
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -25,8 +25,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
   selector:
     app: hello-one
 ---
@@ -45,10 +45,10 @@ spec:
         app: hello-two
     spec:
       containers:
-      - name: hello-ingress
-        image: nginxdemos/hello
-        ports:
-        - containerPort: 80
+        - name: hello-ingress
+          image: nginxdemos/hello
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -57,8 +57,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
   selector:
     app: hello-two
 ---
@@ -70,21 +70,21 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: one.127.0.0.1.sslip.io
-    http:
-      paths:
-      - backend:
-          service:
-           name: hello-one
-           port:
-             number: 80
-        pathType: ImplementationSpecific
-  - host: two.127.0.0.1.sslip.io
-    http:
-      paths:
-      - backend:
-          service:
-           name: hello-two
-           port:
-             number: 80
-        pathType: ImplementationSpecific
+    - host: one.127.0.0.1.sslip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: hello-one
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
+    - host: two.127.0.0.1.sslip.io
+      http:
+        paths:
+          - backend:
+              service:
+                name: hello-two
+                port:
+                  number: 80
+            pathType: ImplementationSpecific
