@@ -18,9 +18,11 @@ install_linux() {
     if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
         sudo apt-get update
         sudo apt-get install --assume-yes $APP_BIN
-    elif [ "$OS_ID" == "centos" ] || [ "$OS_ID" == "fedora" ]; then
+    elif [ "$OS_ID" == "centos" ]; then
         sudo dnf install --assumeyes epel-release
         sudo dnf install --assumeyes $APP_BIN
+    elif [ "$OS_ID" == "fedora" ]; then
+        sudo dnf install --assumeyes ShellCheck
     fi
 }
 
