@@ -2,28 +2,25 @@
 set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
-OS_ID=""
-[ -f "/etc/os-release" ] && source /etc/os-release && OS_ID=$ID
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
-OS_TYPE_LINUX_AMD64=linux-gnu
-APP_BIN=shellcheck
-APP_PATH=/usr/bin/$APP_BIN
+OS_TYPE_LINUX_AMD64=linux-x64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
+APP_BIN=tree-sitter
+APP_URL=https://github.com/tree-sitter/tree-sitter/releases/download
+APP_VERSION=0.20.0
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=$APP_BIN-$OS_TYPE
+APP_PKG=$APP_SRC.gz
+APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
 
 check_version() {
     $APP_BIN --version
 }
 
 install_linux() {
-    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
-        sudo apt-get update
-        sudo apt-get install --assume-yes $APP_BIN
-    elif [ "$OS_ID" == "centos" ]; then
-        sudo dnf install --assumeyes epel-release
-        sudo dnf install --assumeyes $APP_BIN
-    elif [ "$OS_ID" == "fedora" ]; then
-        sudo dnf install --assumeyes ShellCheck
-    fi
+    curl -L $APP_URL | gunzip -c - > $APP_PATH
+    chmod +x $APP_PATH
 }
 
 setup_darwin() {

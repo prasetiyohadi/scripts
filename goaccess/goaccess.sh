@@ -7,7 +7,7 @@ OS_ID=""
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux-gnu
-APP_BIN=shellcheck
+APP_BIN=goaccess
 APP_PATH=/usr/bin/$APP_BIN
 
 check_version() {
@@ -16,13 +16,15 @@ check_version() {
 
 install_linux() {
     if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
+        wget -O - https://deb.goaccess.io/gnugpg.key \
+            | gpg --dearmor \
+            | sudo tee /usr/share/keyrings/goaccess.gpg >/dev/null
+        echo \
+            "deb [signed-by=/usr/share/keyrings/goaccess.gpg]"\
+            "https://deb.goaccess.io/ $(lsb_release -cs) main" \
+            | sudo tee /etc/apt/sources.list.d/goaccess.list
         sudo apt-get update
-        sudo apt-get install --assume-yes $APP_BIN
-    elif [ "$OS_ID" == "centos" ]; then
-        sudo dnf install --assumeyes epel-release
-        sudo dnf install --assumeyes $APP_BIN
-    elif [ "$OS_ID" == "fedora" ]; then
-        sudo dnf install --assumeyes ShellCheck
+        sudo apt-get install goaccess
     fi
 }
 

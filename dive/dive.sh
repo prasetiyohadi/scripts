@@ -2,28 +2,41 @@
 set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
-OS_ID=""
-[ -f "/etc/os-release" ] && source /etc/os-release && OS_ID=$ID
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
-OS_TYPE_LINUX_AMD64=linux-gnu
-APP_BIN=shellcheck
-APP_PATH=/usr/bin/$APP_BIN
+OS_TYPE_LINUX_AMD64=linux_amd64
+[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE="$OS_TYPE_LINUX_AMD64"
+APP_BIN=dive
+APP_URL=https://github.com/wagoodman/dive/releases/download
+APP_VERSION=0.10.0
+APP_PATH=~/bin/$APP_BIN
+APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
+APP_PKG=$APP_SRC.tar.gz
+APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
 
 check_version() {
-    $APP_BIN --version
+    $APP_BIN version
+}
+
+clean() {
+    rm -r /tmp/$APP_PKG /tmp/$APP_SRC
+}
+
+download() {
+    wget -O /tmp/$APP_PKG $APP_URL
+    mkdir -p /tmp/$APP_SRC
+    tar -xf /tmp/$APP_PKG -C /tmp/$APP_SRC
+}
+
+install() {
+    mkdir -p ~/bin
+    mv /tmp/$APP_SRC/$APP_BIN ~/bin
 }
 
 install_linux() {
-    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
-        sudo apt-get update
-        sudo apt-get install --assume-yes $APP_BIN
-    elif [ "$OS_ID" == "centos" ]; then
-        sudo dnf install --assumeyes epel-release
-        sudo dnf install --assumeyes $APP_BIN
-    elif [ "$OS_ID" == "fedora" ]; then
-        sudo dnf install --assumeyes ShellCheck
-    fi
+    download
+    install
+    clean
 }
 
 setup_darwin() {
@@ -32,7 +45,7 @@ setup_darwin() {
 }
 
 setup_linux() {
-    echo "This script will install $APP_BIN."
+    echo "This script will install $APP_BIN version $APP_VERSION."
     if [ -s "$APP_PATH" ]; then
         check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r

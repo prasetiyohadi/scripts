@@ -7,7 +7,7 @@ OS_ID=""
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux-gnu
-APP_BIN=shellcheck
+APP_BIN=yamllint
 APP_PATH=/usr/bin/$APP_BIN
 
 check_version() {
@@ -18,11 +18,8 @@ install_linux() {
     if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
         sudo apt-get update
         sudo apt-get install --assume-yes $APP_BIN
-    elif [ "$OS_ID" == "centos" ]; then
-        sudo dnf install --assumeyes epel-release
-        sudo dnf install --assumeyes $APP_BIN
     elif [ "$OS_ID" == "fedora" ]; then
-        sudo dnf install --assumeyes ShellCheck
+        sudo dnf install --assumeyes $APP_BIN
     fi
 }
 
