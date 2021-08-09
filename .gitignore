@@ -1,5 +1,6 @@
 *.swp
 .config
+.config.lock
 .env
 .lock
 .python-version
