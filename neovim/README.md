@@ -1,6 +1,8 @@
-# Vim
+# Neovim
 
-This vim installation is using Neovim.
+[Neovim](https://neovim.io/) is a Vim-fork focused on extensibility and usability.
+
+[Github repository](https://github.com/neovim/neovim)
 
 ## Configuration
 
