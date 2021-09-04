@@ -3,45 +3,44 @@ set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
-OS_TYPE_DARWIN=macos
-OS_TYPE_LINUX_AMD64=linux_amd64
-[ "$OS_TYPE" == "darwin" ] && export OS_TYPE=$OS_TYPE_DARWIN
+OS_TYPE_DARWIN=darwin
+OS_TYPE_LINUX_AMD64=linux-amd64-bin
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-APP_BIN=shfmt
-APP_URL=https://github.com/mvdan/sh/releases/download
-APP_VERSION=3.3.1
-APP_PATH=~/bin/$APP_BIN
-APP_SRC=${APP_BIN}_v${APP_VERSION}_${OS_TYPE}
-APP_URL=$APP_URL/v$APP_VERSION/$APP_SRC
+APP_BIN=teleport
+APP_VERSION=7.0.2
+APP_URL=https://get.gravitational.com
+APP_PATH=/usr/local/bin/$APP_BIN
+APP_SRC=${APP_BIN}-v${APP_VERSION}-${OS_TYPE}
+APP_PKG=$APP_SRC.tar.gz
+APP_URL=$APP_URL/$APP_PKG
 
 check_version() {
     $APP_BIN --version
 }
 
-install() {
-    mkdir -p ~/bin
-    wget -O $APP_PATH $APP_URL
-    chmod +x $APP_PATH
+install_linux() {
+    curl -O $APP_URL | tar -zxfC /tmp
+    cd /tmp/$APP_BIN && sudo ./install
 }
 
 setup_darwin() {
     echo "This script will install $APP_BIN using brew."
-    command -v brew >/dev/null && brew install $APP_BIN
+    command -v brew > /dev/null && brew install $APP_BIN
 }
 
 setup_linux() {
-    echo "This script will install $APP_BIN version $APP_VERSION."
+    echo "This script will install $APP_BIN."
     if [ -s "$APP_PATH" ]; then
         check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            install
+            install_linux
         else
             echo "Installation cancelled."
         fi
     else
-        install
+        install_linux
     fi
 }
 
