@@ -47,7 +47,7 @@ setup_linux() {
 
 main() {
     if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
-        setup
+        setup_darwin
     elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
         setup_linux
     fi
