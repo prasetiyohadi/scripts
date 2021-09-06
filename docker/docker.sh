@@ -7,8 +7,8 @@ OS_ID=""
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux-gnu
-APP_BIN=code
-APP_PATH=/usr/bin/$APP_BIN
+APP_BIN=docker
+APP_PATH=/usr/bin/docker
 
 check_version() {
     $APP_BIN --version
@@ -16,18 +16,26 @@ check_version() {
 
 install_linux() {
     if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ] || [ "$OS_ID" == "pop" ]; then
-        curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/packages.microsoft.gpg
-        sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg /usr/share/keyrings/
-        sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-        sudo apt-get install apt-transport-https
+        sudo apt-get remove -y docker docker-engine docker.io containerd runc || true
         sudo apt-get update
-        sudo apt-get install $APP_BIN # or $APP_BIN-insiders
+        sudo apt-get install --no-install-recommends --no-install-suggests \
+            -y apt-transport-https ca-certificates curl gnupg lsb-release
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+            sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+        echo \
+            "deb [arch=amd64" \
+            "signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]" \
+            "https://download.docker.com/linux/ubuntu $(lsb_release -cs)" \
+            "stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt-get update
+        sudo apt-get install --no-install-recommends --no-install-suggests \
+            -y docker-ce docker-ce-cli containerd.io pass
     fi
 }
 
 setup_darwin() {
     echo "This script will install $APP_BIN using brew."
-    command -v brew > /dev/null && brew install --cask visual-studio-code
+    command -v brew > /dev/null && brew install --cask $APP_BIN
 }
 
 setup_linux() {
@@ -37,6 +45,7 @@ setup_linux() {
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
+            rm -fr $APP_PATH
             install_linux
         else
             echo "Installation cancelled."

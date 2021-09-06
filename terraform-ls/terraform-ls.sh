@@ -11,7 +11,7 @@ OS_TYPE_LINUX_ARM=linux_arm
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
 APP_BIN=terraform-ls
 APP_URL=https://github.com/hashicorp/terraform-ls/releases/download
-APP_VERSION=0.20.1
+APP_VERSION=0.21.0
 APP_PATH=~/bin/$APP_BIN
 APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
 APP_PKG=$APP_SRC.zip

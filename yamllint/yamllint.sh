@@ -15,7 +15,7 @@ check_version() {
 }
 
 install_linux() {
-    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
+    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ] || [ "$OS_ID" == "pop" ]; then
         sudo apt-get update
         sudo apt-get install --assume-yes $APP_BIN
     elif [ "$OS_ID" == "fedora" ]; then
