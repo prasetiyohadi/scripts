@@ -8,7 +8,7 @@ OS_TYPE_LINUX_AMD64=linux-x86_64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 APP_BIN=google-cloud-sdk
 APP_URL=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads
-APP_VERSION=344.0.0
+APP_VERSION=355.0.0
 APP_ROOT=~/.local/$APP_BIN
 APP_SRC=$APP_BIN-$APP_VERSION-$OS_TYPE
 APP_PKG=$APP_SRC.tar.gz
