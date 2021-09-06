@@ -15,7 +15,7 @@ check_version() {
 }
 
 install_linux() {
-    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
+    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ] || [ "$OS_ID" == "pop" ]; then
         curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/packages.microsoft.gpg
         sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg /usr/share/keyrings/
         sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
