@@ -19,6 +19,7 @@ check_version() {
 }
 
 install_linux() {
+    mkdir -p ~/bin
     curl -L $APP_URL | gunzip -c - > $APP_PATH
     chmod +x $APP_PATH
 }
