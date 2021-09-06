@@ -15,13 +15,13 @@ check_version() {
 }
 
 install_linux() {
-    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
+    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ] || [ "$OS_ID" == "pop" ]; then
         sudo apt-get update
         sudo apt-get install --no-install-recommends --no-install-suggests \
             -y build-essential libssl-dev zlib1g-dev libbz2-dev \
             libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
             libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev \
-            python-openssl git
+            python3-openssl git
     elif [ "$OS_ID" == "fedora" ]; then
         sudo dnf install make gcc zlib-devel bzip2 bzip2-devel \
             readline-devel sqlite sqlite-devel openssl-devel tk-devel \
