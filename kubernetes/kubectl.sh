@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
