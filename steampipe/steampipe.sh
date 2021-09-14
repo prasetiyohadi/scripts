@@ -1,35 +1,32 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
-OS_TYPE_LINUX_AMD64=amd64
-[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-APP_BIN=kubectl
-APP_URL=https://storage.googleapis.com/kubernetes-release/release
-APP_PATH=~/bin/$APP_BIN
-APP_STABLE=$(curl -s $APP_URL/stable.txt)
-[ -z "$APP_VERSION" ] && export APP_VERSION=$APP_STABLE
-APP_URL=$APP_URL/$APP_VERSION/bin/linux/$OS_TYPE/$APP_BIN
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=steampipe
+APP_URL=https://raw.githubusercontent.com/turbot/steampipe/main/install.sh
+APP_PATH=/usr/local/bin/$APP_BIN
 
 check_version() {
-    $APP_BIN version --client
+    $APP_BIN -v
 }
 
 install_linux() {
-    mkdir -p ~/bin
-    curl -Lo $APP_PATH "$APP_URL"
-    chmod +x $APP_PATH
+    sudo /bin/sh -c "$(curl -fsSL $APP_URL)"
 }
 
 setup_darwin() {
     echo "This script will install $APP_BIN using brew."
-    command -v brew > /dev/null && brew install kubernetes-cli
+    if [ $(command -v brew > /dev/null) ]; then
+        brew tap turbot/tap
+        brew install $APP_BIN
+    fi
 }
 
 setup_linux() {
-    echo "This script will install $APP_BIN version $APP_VERSION."
+    echo "This script will install $APP_BIN."
     if [ -s "$APP_PATH" ]; then
         check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r

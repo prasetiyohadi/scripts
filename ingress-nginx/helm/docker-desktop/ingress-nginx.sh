@@ -27,7 +27,7 @@ install() {
     pushd "$(dirname "$0")" &> /dev/null
     add_repo
     # Installation command for the application
-    $HELM_CMD $HELM_SUBCMD -n $APP_NAMESPACE $APP_RELEASE $APP_REPO/$APP_NAME
+    $HELM_CMD $HELM_SUBCMD --create-namespace -n $APP_NAMESPACE $APP_RELEASE $APP_REPO/$APP_NAME
     popd &> /dev/null
 }
 
