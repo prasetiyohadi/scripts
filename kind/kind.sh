@@ -10,7 +10,7 @@ OS_TYPE_LINUX_ARM=linux-arm64
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
 APP_BIN=kind
 APP_URL=https://kind.sigs.k8s.io/dl
-APP_VERSION=0.10.0
+APP_VERSION=0.11.1
 APP_PATH=~/bin/$APP_BIN
 APP_SRC=$APP_BIN-$OS_TYPE
 APP_URL=$APP_URL/v$APP_VERSION/$APP_SRC
