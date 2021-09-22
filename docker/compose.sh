@@ -5,12 +5,15 @@ OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux-gnu
+APP_APIURL=https://api.github.com/repos/docker/compose
+APP_APIURL=$APP_APIURL/releases/latest
+APP_BASEURL=https://github.com/docker/compose/releases/download
 APP_BIN=docker-compose
-APP_URL=https://github.com/docker/compose/releases/download
-APP_VERSION=1.29.2
 APP_PATH=/usr/local/bin/$APP_BIN
+APP_VERSION=$(curl --silent $APP_APIURL | grep '"tag_name"' \
+    | sed -E 's/.*"([^"]+)".*/\1/')
 APP_SRC=$APP_BIN-$(uname -s)-$(uname -m)
-APP_URL=$APP_URL/$APP_VERSION/$APP_SRC
+APP_URL=$APP_BASEURL/$APP_VERSION/$APP_SRC
 HAS_DOCKER_COMPOSE="$(type "docker-compose" &> /dev/null && echo true || echo false)"
 
 check_version() {

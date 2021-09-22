@@ -34,7 +34,6 @@ install() {
     tar -xf /tmp/$APP_PKG -C ~/.local
     sh $APP_ROOT/install.sh --quiet
     sh $APP_ROOT/bin/gcloud -q components update
-    sh $APP_ROOT/bin/gcloud -q components install kubectl
 }
 
 install_linux() {

@@ -2,11 +2,11 @@
 set -euo pipefail
 
 # Application details
-APP_NAME=crossplane
-APP_NAMESPACE=crossplane-system
-APP_RELEASE=crossplane
-APP_REPO=crossplane-stable
-APP_REPO_URL=https://charts.crossplane.io/stable
+APP_NAME=aad-pod-identity
+APP_NAMESPACE=aad-pod-identity
+APP_RELEASE=aad-pod-identity
+APP_REPO=aad-pod-identity
+APP_REPO_URL=https://raw.githubusercontent.com/Azure/aad-pod-identity/master/charts
 HAS_HELM="$(type "helm" &> /dev/null && echo true || echo false)"
 HELM_CMD="helm --repository-cache .cache --repository-config .config"
 

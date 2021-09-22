@@ -13,7 +13,7 @@ APP_URL=https://raw.githubusercontent.com/kubernetes-sigs/$APP_BIN/master/hack
 APP_URL=$APP_URL/$APP_SRC
 
 check_version() {
-    $APP_BIN version
+    $APP_BIN version --short
 }
 
 install_linux() {
@@ -28,7 +28,7 @@ setup_darwin() {
 }
 
 setup_linux() {
-    echo "This script will install $APP_BIN version $APP_VERSION."
+    echo "This script will install $APP_BIN."
     if [ -s "$APP_PATH" ]; then
         check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r

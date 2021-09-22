@@ -11,7 +11,7 @@ APP_APIURL=$APP_APIURL/releases/latest
 APP_BASEURL=https://github.com/argoproj/argo-cd/releases/download
 APP_BIN=argocd
 APP_PATH=~/bin/$APP_BIN
-APP_SRC=argocd-$OS_TYPE
+APP_SRC=$APP_BIN-$OS_TYPE
 APP_VERSION=$(curl --silent $APP_APIURL | grep '"tag_name"' \
     | sed -E 's/.*"([^"]+)".*/\1/')
 APP_URL=$APP_BASEURL/$APP_VERSION/$APP_SRC

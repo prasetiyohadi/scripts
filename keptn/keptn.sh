@@ -4,38 +4,17 @@ set -euo pipefail
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
-OS_TYPE_LINUX_AMD64=linux_amd64
-[ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-APP_BIN=vagrant
-APP_PATH=~/bin/$APP_BIN
-APP_URL=https://releases.hashicorp.com/$APP_BIN
-APP_VERSION=$(curl -sL $APP_URL | grep -E "${APP_BIN}_[.0-9]+<" \
-    | sed -E 's/.*_([.0-9]+)<.*/\1/' | head -n 1)
-APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
-APP_PKG=$APP_SRC.zip
-APP_URL=$APP_URL/$APP_VERSION/$APP_PKG
+OS_TYPE_LINUX_AMD64=linux-gnu
+APP_BIN=keptn
+APP_URL=https://get.keptn.sh
+APP_PATH=/usr/local/bin/$APP_BIN
 
 check_version() {
-    $APP_BIN --version
-}
-
-clean() {
-    rm -f /tmp/$APP_PKG
-}
-
-download() {
-    wget -O /tmp/$APP_PKG $APP_URL
-}
-
-install() {
-    mkdir -p ~/bin
-    unzip /tmp/$APP_PKG -d ~/bin
+    $APP_BIN version
 }
 
 install_linux() {
-    download
-    install
-    clean
+    curl -sL $APP_URL | bash
 }
 
 setup_darwin() {
@@ -44,7 +23,7 @@ setup_darwin() {
 }
 
 setup_linux() {
-    echo "This script will install $APP_BIN version $APP_VERSION."
+    echo "This script will install $APP_BIN."
     if [ -s "$APP_PATH" ]; then
         check_version
         read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
