@@ -7,11 +7,13 @@ OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux_amd64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 APP_BIN=vagrant
-APP_VERSION=2.2.16
 APP_PATH=~/bin/$APP_BIN
+APP_URL=https://releases.hashicorp.com/$APP_BIN
+APP_VERSION=$(curl -sL $APP_URL | grep -E "${APP_BIN}_[.0-9]+<" \
+    | sed -E 's/.*_([.0-9]+)<.*/\1/' | head -n 1)
 APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
 APP_PKG=$APP_SRC.zip
-APP_URL=https://releases.hashicorp.com/$APP_BIN/$APP_VERSION/$APP_PKG
+APP_URL=$APP_URL/$APP_VERSION/$APP_PKG
 
 check_version() {
     $APP_BIN --version

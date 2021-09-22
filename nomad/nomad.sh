@@ -10,9 +10,10 @@ OS_TYPE_LINUX_ARM=linux_arm
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 [ "$OS_TYPE" == "linux-gnueabihf" ] && export OS_TYPE=$OS_TYPE_LINUX_ARM
 APP_BIN=nomad
-APP_URL=https://releases.hashicorp.com/nomad
-APP_VERSION=1.1.0
 APP_PATH=~/bin/$APP_BIN
+APP_URL=https://releases.hashicorp.com/$APP_BIN
+APP_VERSION=$(curl -sL $APP_URL | grep -E "${APP_BIN}_[.0-9]+<" \
+    | sed -E 's/.*_([.0-9]+)<.*/\1/' | head -n 1)
 APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
 APP_PKG=$APP_SRC.zip
 APP_URL=$APP_URL/$APP_VERSION/$APP_PKG
