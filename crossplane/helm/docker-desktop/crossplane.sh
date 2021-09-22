@@ -7,7 +7,6 @@ APP_NAMESPACE=crossplane-system
 APP_RELEASE=crossplane
 APP_REPO=crossplane-stable
 APP_REPO_URL=https://charts.crossplane.io/stable
-APP_VERSION=1.3.0
 HAS_HELM="$(type "helm" &> /dev/null && echo true || echo false)"
 HELM_CMD="helm --repository-cache .cache --repository-config .config"
 
@@ -27,7 +26,7 @@ install() {
     pushd "$(dirname "$0")" &> /dev/null
     add_repo
     # Installation command for the application
-    $HELM_CMD upgrade --install --create-namespace -n $APP_NAMESPACE $APP_RELEASE $APP_REPO/$APP_NAME --version $APP_VERSION
+    $HELM_CMD upgrade --install --create-namespace -n $APP_NAMESPACE $APP_RELEASE $APP_REPO/$APP_NAME
     popd &> /dev/null
 }
 
