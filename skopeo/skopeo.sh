@@ -16,7 +16,7 @@ check_version() {
 }
 
 install_linux() {
-    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ]; then
+    if [ "$OS_ID" == "debian" ] || [ "$OS_ID" == "ubuntu" ] || [ "$OS_ID" == "pop" ]; then
         echo "deb ${DEB_URL}/xUbuntu_${VERSION_ID}/ /" | sudo tee \
             /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
         curl -L ${DEB_URL}/xUbuntu_${VERSION_ID}/Release.key | \
