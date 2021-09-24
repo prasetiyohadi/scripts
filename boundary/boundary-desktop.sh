@@ -28,6 +28,11 @@ install_linux() {
     fi
 }
 
+setup_darwin() {
+    echo "This script will install $APP_BIN using brew."
+    command -v brew > /dev/null && brew install hashicorp-$APP_BIN
+}
+
 setup_linux() {
     echo "This script will install $APP_BIN version $APP_VERSION."
     if [ -s "$APP_PATH" ]; then
@@ -44,7 +49,9 @@ setup_linux() {
 }
 
 main() {
-    if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+    if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
+        setup_darwin
+    elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
         setup_linux
     fi
 }
