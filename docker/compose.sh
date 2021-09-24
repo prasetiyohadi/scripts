@@ -14,7 +14,7 @@ APP_VERSION=$(curl --silent $APP_APIURL | grep '"tag_name"' \
     | sed -E 's/.*"([^"]+)".*/\1/')
 APP_SRC=$APP_BIN-$(uname -s)-$(uname -m)
 APP_URL=$APP_BASEURL/$APP_VERSION/$APP_SRC
-HAS_DOCKER_COMPOSE="$(type "docker-compose" &> /dev/null && echo true || echo false)"
+HAS_APP="$(type "$APP_BIN" &> /dev/null && echo true || echo false)"
 
 check_version() {
     $APP_BIN version
@@ -33,12 +33,13 @@ setup_darwin() {
 
 setup_linux() {
     echo "This script will install $APP_BIN version $APP_VERSION."
-    if [ "$HAS_DOCKER_COMPOSE" == "true" ]; then
+    if [ "$HAS_APP" == "true" ]; then
         check_version
-        read -p "$APP_BIN already exists. Replace[yn]? " -n 1 -r
+        APP_PATH=$(command -v $APP_BIN)
+        read -p "$APP_PATH already exists. Replace[yn]? " -n 1 -r
         echo
         if [[ "$REPLY" =~ ^[Yy]$ ]]; then
-            APP_PATH=$(command -v $APP_BIN) install_linux
+            install_linux
         else
             echo "Installation cancelled."
         fi
