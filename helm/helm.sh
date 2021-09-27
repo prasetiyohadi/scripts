@@ -48,6 +48,7 @@ add_repo() {
     $APP_BIN repo add prometheus-community https://prometheus-community.github.io/helm-charts
     $APP_BIN repo add datadog https://helm.datadoghq.com
     $APP_BIN repo add rook-release https://charts.rook.io/release
+    $APP_BIN repo add kedacore https://kedacore.github.io/charts
     $APP_BIN repo update
 }
 
