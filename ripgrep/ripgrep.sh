@@ -11,6 +11,7 @@ HAS_CARGO="$(type "cargo" &> /dev/null && echo true || echo false)"
 install() {
     cargo install $APP_BIN
 }
+
 setup_darwin() {
     echo "This script will install $APP_BIN using brew."
     command -v brew > /dev/null && brew install $APP_BIN
