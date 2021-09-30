@@ -1,0 +1,33 @@
+- aws-vault: https://github.com/99designs/aws-vault
+- caddy: https://github.com/caddyserver/caddy#install
+- cloud-init: https://github.com/canonical/cloud-init
+- cosign: https://github.com/sigstore/cosign
+- cri-o: https://github.com/cri-o/cri-o https://cri-o.io/
+- eksctl: https://github.com/weaveworks/eksctl https://eksctl.io/
+- falco: https://github.com/falcosecurity/falco https://falco.org/
+- flux cli: https://fluxcd.io/docs/
+- fulcio: https://github.com/sigstore/fulcio https://martinheinz.dev/blog/56
+- goreleaser: https://github.com/goreleaser/goreleaser/ https://goreleaser.com/
+- hcloud: https://github.com/hetznercloud/cli
+- istio: https://github.com/istio/istio https://istio.io/
+- ko: https://github.com/google/ko
+- kompose: https://github.com/kubernetes/kompose https://kompose.io/
+- kubeadm: copy kubectl.sh
+- kube-apiserver: copy kubectl.sh
+- kube-controller-manager: copy kubectl.sh
+- kubectl-cert_manager: https://github.com/jetstack/cert-manager https://cert-manager.io/
+- kubectl-ingress_nginx: kubectl krew install ingress-nginx
+- kubectx: https://github.com/ahmetb/kubectx https://kubectx.dev/
+- kubelet: copy kubectl.sh
+- kubeone: https://github.com/kubermatic/kubeone https://kubeone.io/
+- kube-proxy: copy kubectl.sh
+- kube-scheduler: copy kubectl.sh
+- operator-sdk: https://github.com/operator-framework/operator-sdk https://sdk.operatorframework.io/
+- popeye: https://github.com/derailed/popeye https://popeyecli.io/
+- pulumi: https://github.com/pulumi/pulumi https://www.pulumi.com/
+- rekor: https://github.com/sigstore/rekor https://sigstore.dev/
+- restic: https://github.com/restic/restic https://restic.net/
+- tanka: https://github.com/grafana/tanka https://tanka.dev/
+- tektoncd-cli: https://github.com/tektoncd/cli
+- traefik: https://github.com/traefik/traefik https://traefik.io/
+- vals: https://github.com/variantdev/vals

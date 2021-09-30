@@ -1,5 +1,9 @@
 # Cert-manager
 
+[Cert-manager](https://cert-manager.io/) is a tool to automatically provision and manage TLS certificates in Kubernetes.
+
+[Github repository](https://github.com/jetstack/cert-manager)
+
 ## Getting Started
 
 * install helm repository
