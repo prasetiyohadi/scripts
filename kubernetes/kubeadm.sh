@@ -6,7 +6,7 @@ OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
 OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=amd64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-APP_BIN=kubectl
+APP_BIN=kubeadm
 APP_URL=https://storage.googleapis.com/kubernetes-release/release
 APP_PATH=/usr/local/bin/$APP_BIN
 APP_STABLE=$(curl -s $APP_URL/stable.txt)
@@ -14,7 +14,7 @@ APP_STABLE=$(curl -s $APP_URL/stable.txt)
 APP_URL=$APP_URL/$APP_VERSION/bin/linux/$OS_TYPE/$APP_BIN
 
 check_version() {
-    $APP_BIN version --client
+    $APP_BIN version
 }
 
 install_linux() {
