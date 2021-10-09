@@ -12,16 +12,16 @@
 - istio: https://github.com/istio/istio https://istio.io/
 - ko: https://github.com/google/ko
 - kompose: https://github.com/kubernetes/kompose https://kompose.io/
-- kubeadm: copy kubectl.sh
-- kube-apiserver: copy kubectl.sh
-- kube-controller-manager: copy kubectl.sh
++ kubeadm: copy kubectl.sh
++ kube-apiserver: copy kubectl.sh
++ kube-controller-manager: copy kubectl.sh
 - kubectl-cert_manager: https://github.com/jetstack/cert-manager https://cert-manager.io/
 - kubectl-ingress_nginx: kubectl krew install ingress-nginx
 - kubectx: https://github.com/ahmetb/kubectx https://kubectx.dev/
-- kubelet: copy kubectl.sh
++ kubelet: copy kubectl.sh
 - kubeone: https://github.com/kubermatic/kubeone https://kubeone.io/
-- kube-proxy: copy kubectl.sh
-- kube-scheduler: copy kubectl.sh
++ kube-proxy: copy kubectl.sh
++ kube-scheduler: copy kubectl.sh
 - operator-sdk: https://github.com/operator-framework/operator-sdk https://sdk.operatorframework.io/
 - popeye: https://github.com/derailed/popeye https://popeyecli.io/
 - pulumi: https://github.com/pulumi/pulumi https://www.pulumi.com/
