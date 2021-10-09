@@ -19,7 +19,7 @@ check_version() {
 }
 
 clean() {
-    rm -rv /tmp/aws /tmp/awscliv2.sig /tmp/awscliv2.zip
+    rm -rf /tmp/aws /tmp/awscliv2.sig /tmp/awscliv2.zip
 }
 
 download() {
