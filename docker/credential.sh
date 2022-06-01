@@ -7,7 +7,7 @@ OS_TYPE_LINUX_AMD64=amd64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 APP_BIN=docker-credential-pass
 APP_URL=https://github.com/docker/docker-credential-helpers/releases/download
-APP_VERSION=0.6.3
+APP_VERSION=0.6.4
 APP_PATH=/usr/local/bin/$APP_BIN
 APP_SRC=$APP_BIN-v$APP_VERSION-$OS_TYPE
 APP_PKG=$APP_SRC.tar.gz
