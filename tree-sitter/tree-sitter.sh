@@ -8,7 +8,7 @@ OS_TYPE_LINUX_AMD64=linux-x64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 APP_BIN=tree-sitter
 APP_URL=https://github.com/tree-sitter/tree-sitter/releases/download
-APP_VERSION=0.20.0
+APP_VERSION=0.20.6
 APP_PATH=~/bin/$APP_BIN
 APP_SRC=$APP_BIN-$OS_TYPE
 APP_PKG=$APP_SRC.gz
