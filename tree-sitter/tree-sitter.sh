@@ -8,8 +8,8 @@ OS_TYPE_LINUX_AMD64=linux-x64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 APP_BIN=tree-sitter
 APP_URL=https://github.com/tree-sitter/tree-sitter/releases/download
-APP_VERSION=0.20.6
-APP_PATH=~/bin/$APP_BIN
+APP_VERSION=0.20.7
+APP_PATH=~/.local/bin/$APP_BIN
 APP_SRC=$APP_BIN-$OS_TYPE
 APP_PKG=$APP_SRC.gz
 APP_URL=$APP_URL/v$APP_VERSION/$APP_PKG
@@ -19,7 +19,7 @@ check_version() {
 }
 
 install_linux() {
-    mkdir -p ~/bin
+    mkdir -p ~/.local/bin
     curl -L $APP_URL | gunzip -c - > $APP_PATH
     chmod +x $APP_PATH
 }
