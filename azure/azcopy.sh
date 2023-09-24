@@ -8,8 +8,8 @@ OS_TYPE_LINUX_AMD64=linux_amd64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
 APP_BIN=azcopy
 APP_PATH=~/bin/$APP_BIN
-APP_URL=https://azcopyvnext.azureedge.net/release20210415
-APP_VERSION=10.20.0
+APP_VERSION=10.20.1
+APP_URL=https://azcopyvnext.azureedge.net/releases/release-${APP_VERSION}-20230809
 APP_SRC=azcopy_${OS_TYPE}_${APP_VERSION}
 APP_PKG=$APP_SRC.tar.gz
 APP_URL=$APP_URL/$APP_PKG
