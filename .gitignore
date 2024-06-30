@@ -11,6 +11,9 @@
 docs/
 site/
 
+# Python virtualenv
+venv/
+
 # Terraform files
 .terraform
 terraform.tfstate

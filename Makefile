@@ -16,7 +16,16 @@ generate: clean
 	printf "\n## Documentation\n\n" | tee -a docs/index.md
 	find . -maxdepth 2 -mindepth 2 -type f -name README.md -print0 | sort -z | xargs -0 -n 1 -r sh -c 'echo \* [$$(echo $${0%/README.md}|cut -c 3-)]\($${0%/README.md}.md\)' | tee -a docs/index.md
 
-build: dep generate
-	mkdocs build
+assets:
+	# Copy local assets of source README.md
+	# pet:
+	mkdir -p docs/pet
+	cp -pr pet/doc docs/pet
 
-.PHONY: build clean dep generate
+build: dep generate assets
+	mkdocs build
+	# Copy local links of source README.md
+	# gum:
+	cp -pr gum/examples site/gum
+
+.PHONY: build clean dep generate assets
