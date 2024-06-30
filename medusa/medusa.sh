@@ -3,45 +3,35 @@ set -euo pipefail
 
 OS=${OSTYPE:-'linux-gnu'}
 OS_TYPE=$(echo "$OS" | tr -d ".[:digit:]")
-OS_TYPE_DARWIN=darwin
 OS_TYPE_LINUX_AMD64=linux_amd64
 [ "$OS_TYPE" == "linux-gnu" ] && export OS_TYPE=$OS_TYPE_LINUX_AMD64
-APP_BIN=azcopy
-APP_PATH=~/bin/$APP_BIN
-APP_VERSION=10.20.1
-APP_URL=https://azcopyvnext.azureedge.net/releases/release-${APP_VERSION}-20230809
-APP_SRC=azcopy_${OS_TYPE}_${APP_VERSION}
+APP_APIURL=https://api.github.com/repos/jonasvinther/medusa
+APP_APIURL=$APP_APIURL/releases/latest
+APP_BASEURL=https://github.com/jonasvinther/medusa/releases/download
+APP_BIN=medusa
+APP_PATH=~/.local/bin/$APP_BIN
+APP_VERSION=$(curl --silent $APP_APIURL | grep '"tag_name"' |
+	sed -E 's/.*"v([^"]+)".*/\1/')
+APP_SRC=${APP_BIN}_${APP_VERSION}_${OS_TYPE}
 APP_PKG=$APP_SRC.tar.gz
-APP_URL=$APP_URL/$APP_PKG
+APP_URL=$APP_BASEURL/v$APP_VERSION/$APP_PKG
 
 check_version() {
 	$APP_BIN --version
 }
 
-clean() {
-	rm -rf "/tmp/$APP_SRC" "/tmp/$APP_PKG"
-}
-
 download() {
-	[ ! -f "/tmp/$APP_PKG" ] && wget -O "/tmp/$APP_PKG" "$APP_URL"
+	wget -O - "$APP_URL" | tar -C /tmp -zxf -
 }
 
 install() {
-	mkdir -p "/tmp/$APP_SRC"
-	tar -xf "/tmp/$APP_PKG" -C /tmp
 	mkdir -p ~/.local/bin
-	mv "/tmp/$APP_SRC/azcopy" ~/.local/bin/azcopy
+	mv "/tmp/$APP_BIN" $APP_PATH
 }
 
 install_linux() {
 	download
 	install
-	clean
-}
-
-setup_darwin() {
-	echo "This script will install $APP_BIN using brew."
-	command -v brew >/dev/null && brew install $APP_BIN
 }
 
 setup_linux() {
@@ -61,9 +51,7 @@ setup_linux() {
 }
 
 main() {
-	if [ "$OS_TYPE" == "$OS_TYPE_DARWIN" ]; then
-		setup_darwin
-	elif [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
+	if [ "$OS_TYPE" == "$OS_TYPE_LINUX_AMD64" ]; then
 		setup_linux
 	fi
 }
