@@ -21,6 +21,10 @@ assets:
 	# pet:
 	mkdir -p docs/pet
 	cp -pr pet/doc docs/pet
+	# sql-studio
+	mkdir -p docs/sql-studio
+	cp sql-studio/logo_banner.jpg docs/sql-studio
+	cp -pr sql-studio/screenshots docs/sql-studio
 
 build: dep generate assets
 	mkdocs build
